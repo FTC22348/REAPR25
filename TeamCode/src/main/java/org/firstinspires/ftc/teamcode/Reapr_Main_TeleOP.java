@@ -1,11 +1,10 @@
-/* Source code from:
+/* Base code from:
 https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html
 
-
-This is the main teleop file, with servos (for claws) and dc motors (for the elevator system)
+Main TeleOP (1 Driver)
 */
 
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -34,19 +33,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         // motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);  // This was connected on the expansion hub, it needs to be reversed
 
 
-
-        // Elevator Motors
-        DcMotor elevatorMotorLeft = hardwareMap.dcMotor.get("elevatorMotorLeft");
-        DcMotor elevatorMotorRight = hardwareMap.dcMotor.get("elevatorMotorRight");
-
-
-        // Claw Motors (Servo)
-        Servo claw = hardwareMap.servo.get("reaprClaw");// name of server on control hub is reaprClaw
-        // On port:
-        double clawPosition = 0.0;
-        final double clawSpeed = 0.05;// change to 100th when button is hold
-        final double clawMinRange = 0.0;
-        final double clawMaxRange = 0.55;
+        DcMotor spinnerMotor = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0
 
 
         waitForStart();
@@ -79,6 +66,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x;
 
+
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio, but only when
             // at least one is out of the range [-1, 1]
@@ -94,37 +82,19 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             motorBackRight.setPower(backRightPower);
 
 
-            // Servo Controls
 
-            if (gamepad1.b) // Down
-                clawPosition += clawSpeed;
-            else if (gamepad1.x) // Up
-                clawPosition -= clawSpeed;
-
-            clawPosition = Range.clip(clawPosition, clawMinRange, clawMaxRange);
-            claw.setPosition(clawPosition);
-
-            telemetry.addData("claw", "%.2f", clawPosition); //displays the values on the driver hub
-            telemetry.update();
-
-
-            // Elevator Controls
+            // Spinner motor Controls
 
 
             if (gamepad1.a){ // Move down
-                elevatorMotorLeft.setPower(1);
-                elevatorMotorRight.setPower(-1);
+                spinnerMotor.setPower(1);
             }
-            elevatorMotorLeft.setPower(0);
-            elevatorMotorRight.setPower(0);
+            spinnerMotor.setPower(0);
 
             if (gamepad1.y){ // Move up
-                elevatorMotorLeft.setPower(-1);
-                elevatorMotorRight.setPower(1);
+                spinnerMotor.setPower(-1);
             }
-            elevatorMotorLeft.setPower(0);
-            elevatorMotorRight.setPower(0);
-
+            spinnerMotor.setPower(0);
 
         }
     }
