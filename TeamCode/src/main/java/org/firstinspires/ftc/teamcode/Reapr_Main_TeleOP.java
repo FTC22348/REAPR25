@@ -38,9 +38,9 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         // Servo (airplane launcher)
         // On port 0
         Servo launcher = hardwareMap.servo.get("launcher");// name of server on control hub is reaprClaw
-        double launcherPosition = 0.0;
+        double launcherPosition = 0;
         final double launcherSpeed = 0.1;// change to 100th when button is hold
-        final double launcherMinRange = 0.0;
+        final double launcherMinRange = 0.3;
         final double launcherMaxRange = 0.55;
 
 
@@ -109,16 +109,19 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
 
             // Servo Controls
 
-            if (gamepad1.b) // Down
+            if (gamepad1.b) { // Down
                 launcherPosition += launcherSpeed;
-            else if (gamepad1.x) // Up
+                launcherPosition = Range.clip(launcherPosition, launcherMinRange, launcherMaxRange);
+                launcher.setPosition(launcherPosition);
+
+                telemetry.addData("launcher", "%.2f", launcherPosition); //displays the values on the driver hub
+                telemetry.update();
+
+            }
+            else if (gamepad1.x) { // Up
                 launcherPosition -= launcherSpeed;
+            }
 
-            launcherPosition = Range.clip(launcherPosition, launcherMinRange, launcherMaxRange);
-            launcher.setPosition(launcherPosition);
-
-            telemetry.addData("launcher", "%.2f", launcherPosition); //displays the values on the driver hub
-            telemetry.update();
         }
     }
 }
