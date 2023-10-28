@@ -1,9 +1,11 @@
+
 /* Base code from:
 https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html
 
 Main TeleOP (1 Driver)
 */
 
+//imports all the packages and objects needed to use the TeleOp
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "TeleOP")
+@TeleOp(name = "TeleOP") //declares as a TeleOP
 
 public class Reapr_Main_TeleOP extends LinearOpMode {
     @Override
@@ -31,7 +33,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         // motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);  // This was connected on the expansion hub, it needs to be reversed
-
+        //line 35 is not needed
 
         DcMotor spinnerMotor = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0
 
@@ -44,11 +46,13 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         final double launcherMaxRange = 0.55;
 
 
-
+        //pause
         waitForStart();
 
+        //terminates the program
         if (isStopRequested()) return;
 
+        //disabling slow mode
         boolean isSlowMode = false;
         double dividePower=1.0;
 
@@ -60,6 +64,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 dividePower=1.0;
             }
 
+            //configure left game stick button
             if(gamepad1.left_stick_button){
                 if(isSlowMode){
                     isSlowMode=false;
@@ -85,6 +90,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator / dividePower; //Positive rotation results in forward & left motion
             double backRightPower = (y + x - rx) / denominator / dividePower; //Positive rotation results in forward & right motion
 
+            //sets motor power
             motorFrontLeft.setPower(frontLeftPower);
             motorBackLeft.setPower(backLeftPower);
             motorFrontRight.setPower(frontRightPower);
@@ -93,8 +99,6 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
 
 
             // Spinner motor Controls
-
-
             if (gamepad1.a){ // Move down
                 spinnerMotor.setPower(1);
             }
@@ -122,6 +126,15 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 launcherPosition -= launcherSpeed;
             }
 
+<<<<<<< Updated upstream
+=======
+            //sets launcher position
+            launcherPosition = Range.clip(launcherPosition, launcherMinRange, launcherMaxRange);
+            launcher.setPosition(launcherPosition);
+
+            telemetry.addData("launcher", "%,.2f", launcherPosition); //displays the values on the driver hub
+            telemetry.update(); //updates the telemetry data
+>>>>>>> Stashed changes
         }
     }
 }
