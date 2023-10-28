@@ -43,6 +43,15 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         final double launcherMinRange = 0.3;
         final double launcherMaxRange = 0.55;
 
+        // Servo 2(arm)
+        // On port 0
+        Servo arm = hardwareMap.servo.get("arm");// name of server on control hub is reaprClaw
+        double armPosition = 0;
+        final double armSpeed = 0.1;// change to 100th when button is hold
+        final double armMinRange = 0.3;
+        final double armMaxRange = 2.95;
+
+
 
 
         waitForStart();
@@ -94,7 +103,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
 
             // Spinner motor Controls
 
-
+/*
             if (gamepad1.a){ // Move down
                 spinnerMotor.setPower(1);
             }
@@ -105,7 +114,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             }
             spinnerMotor.setPower(0);
 
-
+*/
 
             // Servo Controls
 
@@ -122,6 +131,25 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 launcherPosition -= launcherSpeed;
             }
 
+
+            // Arm controls
+            if (gamepad1.a) { // Down
+                armPosition += armSpeed;
+                //armPosition = Range.clip(armPosition, armMinRange, armMaxRange);
+                arm.setPosition(armPosition);
+
+                telemetry.addData("arm", "%.2f", launcherPosition); //displays the values on the driver hub
+                telemetry.update();
+
+            }
+            else if (gamepad1.y) { // Up
+                armPosition -= armSpeed;
+                //armPosition = Range.clip(armPosition, armMinRange, armMaxRange);
+                arm.setPosition(armPosition);
+
+                telemetry.addData("arm", "%.2f", launcherPosition); //displays the values on the driver hub
+                telemetry.update();
+            }
         }
     }
 }
