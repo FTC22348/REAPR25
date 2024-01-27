@@ -1,7 +1,22 @@
 /* Base code from:
 https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html
 
-Main TeleOP (1 Driver)
+Main TeleOP (2 Driver)
+
+Ports:
+Motors:
+- Motor Front Left - Main 1
+- Motor Back Left - Main 2
+- Motor Front Right - Expansion 1
+- Motor Back Right - Expansion 2
+- Spinner - Control 0
+- Worm gear - Expansion 0
+
+Servos: 
+- Rack and Pinion - Expansion 5
+- Bucket - Expansion 2
+- Servo arm - Expansion 3
+- Drone - Expansion 5
 */
 
 package org.firstinspires.ftc.teamcode;
@@ -21,10 +36,10 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         // Make sure your ID's match your configuration
 
         // Meccanum Drivetrain
-        DcMotor motorFrontLeft = hardwareMap.dcMotor.get("motorFrontLeft"); // Port 0
-        DcMotor motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft"); // Port 1
-        DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight"); // Port 2
-        DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight"); // Port 3
+        DcMotor motorFrontLeft = hardwareMap.dcMotor.get("motorFrontLeft");
+        DcMotor motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft"); 
+        DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight"); 
+        DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight"); 
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -32,26 +47,23 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         // motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);  // This was connected on the expansion hub, it needs to be reversed
 
+        DcMotor wormGear = hardwareMap.dcMotor.get("wormGear"); // Port 0
+        DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0
 
-        DcMotor spinnerMotor = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0
+        // Airplane launcher setup
+        //Servo launcher = hardwareMap.servo.get("launcher");
+        CRServo bucketArm = hardwareMap.servo.get("bucketArm");
+        CRServo bucket = hardwareMap.servo.get("bucket");
 
-        // Servo (airplane launcher)
-        // On port 0
-        Servo launcher = hardwareMap.servo.get("launcher");// name of server on control hub is reaprClaw
-        double launcherPosition = 0;
+
+        /* 
+        double launcherPosition = 0.5;
         final double launcherSpeed = 0.1;// change to 100th when button is hold
         final double launcherMinRange = 0.3;
         final double launcherMaxRange = 0.55;
+        */
 
-        // Servo 2(arm)
-        // On port 0
-        Servo arm = hardwareMap.servo.get("arm");// name of server on control hub is reaprClaw
-        double armPosition = 0;
-        final double armSpeed = 0.1;// change to 100th when button is hold
-        final double armMinRange = 0.3;
-        final double armMaxRange = 2.95;
-
-
+        // Rack and pinion setup
 
 
         waitForStart();
@@ -61,8 +73,10 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         boolean isSlowMode = false;
         double dividePower=1.0;
 
+        int currentPosition = 0;
+
         while (opModeIsActive()) {
-            // Control Speed
+            //! Control Speed
             if(isSlowMode){
                 dividePower=1.5;
             }else{
@@ -79,7 +93,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 }
             }
 
-            // Mecccanum controls
+            //! Mecccanum controls
             double y = -gamepad1.left_stick_y; // Remember, this is reversed!
             double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x;
@@ -100,56 +114,75 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             motorBackRight.setPower(backRightPower);
 
 
-
-            // Spinner motor Controls
-
-/*
-            if (gamepad1.a){ // Move down
-                spinnerMotor.setPower(1);
+            //! Misc motor controls
+            // Worm Gear motor Controls
+            // For hanging arm
+            if (gamepad2.y){ // Move up
+                wormGear.setPower(1);
             }
-            spinnerMotor.setPower(0);
+            wormGear.setPower(0);
+
+            if (gamepad2.a){ // Move down
+                wormGear.setPower(-1);
+            }
+            wormGear.setPower(0);
+
+
+            // Spinner (intake) motor
+            if (gamepad1.a){ // Move down
+                spinner.setPower(1);
+            }
+            spinner.setPower(0);
 
             if (gamepad1.y){ // Move up
-                spinnerMotor.setPower(-1);
+                spinner.setPower(-1);
             }
-            spinnerMotor.setPower(0);
-
-*/
-
-            // Servo Controls
-
-            if (gamepad1.b) { // Down
-                launcherPosition += launcherSpeed;
-                launcherPosition = Range.clip(launcherPosition, launcherMinRange, launcherMaxRange);
-                launcher.setPosition(launcherPosition);
-
-                telemetry.addData("launcher", "%.2f", launcherPosition); //displays the values on the driver hub
-                telemetry.update();
-
-            }
-            else if (gamepad1.x) { // Up
-                launcherPosition -= launcherSpeed;
-            }
+            spinner.setPower(0);
 
 
-            // Arm controls
-            if (gamepad1.a) { // Down
-                armPosition += armSpeed;
-                //armPosition = Range.clip(armPosition, armMinRange, armMaxRange);
-                arm.setPosition(armPosition);
 
-                telemetry.addData("arm", "%.2f", launcherPosition); //displays the values on the driver hub
-                telemetry.update();
+            //! Servo Controls
 
-            }
-            else if (gamepad1.y) { // Up
-                armPosition -= armSpeed;
-                //armPosition = Range.clip(armPosition, armMinRange, armMaxRange);
-                arm.setPosition(armPosition);
-
-                telemetry.addData("arm", "%.2f", launcherPosition); //displays the values on the driver hub
+            // Drone Launcher
+            /* 
+            telemetry.addData("Drone launcher", "%.2f", launcherPosition); //displays the values on the driver hub
+            telemetry.update();
+            if (gamepad1.b) {
+                launcher.setPosition(-1);
                 telemetry.update();
             }
+            else if (gamepad1.x){
+                launcher.setPosition(1);
+                telemetry.update();
+            }
+            */
+
+            // Bucket arm
+            if (gamepad2.dpad_down) {
+                bucketArm.setPower(-1);
+                //telemetry.update();
+            }
+            bucketArm.setPower(0);
+            
+            if (gamepad2.dpad_up){
+                bucketArm.setPower(1);
+            }
+            bucketArm.setPower(0);
+
+
+            // Bucket
+            if(gamepad2.b){
+                bucket.setPower(1);
+                //telemetry.update();
+            }
+            bucket.setPower(0);
+            
+            if(gamepad2.x){
+                bucket.setPower(-1);
+                //telemetry.update();
+            }
+            bucket.setPower(0);
+        
         }
     }
 }
