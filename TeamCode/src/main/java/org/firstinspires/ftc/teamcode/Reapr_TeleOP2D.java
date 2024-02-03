@@ -97,11 +97,6 @@ public class Reapr_TeleOP2D extends LinearOpMode {
 
             // Servo Controls
 
-            if (gamepad2.b) // Down
-                clawPosition += clawSpeed;
-            else if (gamepad2.x) // Up
-                clawPosition -= clawSpeed;
-
             clawPosition = Range.clip(clawPosition, clawMinRange, clawMaxRange);
             claw.setPosition(clawPosition);
 
@@ -111,10 +106,10 @@ public class Reapr_TeleOP2D extends LinearOpMode {
 
             // Elevator Controls
 
-
             if (gamepad2.a){ // Move down
                 elevatorMotorLeft.setPower(1);
                 elevatorMotorRight.setPower(-1);
+                clawPosition -= clawSpeed;
             }
             elevatorMotorLeft.setPower(0);
             elevatorMotorRight.setPower(0);
@@ -122,9 +117,11 @@ public class Reapr_TeleOP2D extends LinearOpMode {
             if (gamepad2.y){ // Move up
                 elevatorMotorLeft.setPower(-1);
                 elevatorMotorRight.setPower(1);
+                clawPosition += clawSpeed;
             }
             elevatorMotorLeft.setPower(0);
             elevatorMotorRight.setPower(0);
+
 
 
         }
