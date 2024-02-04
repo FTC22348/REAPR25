@@ -53,11 +53,11 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0
 
         // Airplane launcher setup
-        //Servo launcher = hardwareMap.servo.get("launcher");
-        CRServo bucketArm = hardwareMap.servo.get("bucketArm");
-        CRServo bucket = hardwareMap.servo.get("bucket");
+        Servo launcher = hardwareMap.servo.get("launcher");
+        CRServo bucketArm = hardwareMap.crservo.get("bucketArm");
+        CRServo bucket = hardwareMap.crservo.get("bucket");
 
-
+ 
         /* 
         double launcherPosition = 0.5;
         final double launcherSpeed = 0.1;// change to 100th when button is hold
@@ -150,18 +150,18 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             //! Servo Controls
 
             // Drone Launcher
-            /* 
-            telemetry.addData("Drone launcher", "%.2f", launcherPosition); //displays the values on the driver hub
-            telemetry.update();
+            
+            //telemetry.addData("Drone launcher", "%.2f", launcherPosition); //displays the values on the driver hub
+            //telemetry.update();
             if (gamepad1.b) {
                 launcher.setPosition(-1);
-                telemetry.update();
+                //telemetry.update();
             }
             else if (gamepad1.x){
                 launcher.setPosition(1);
-                telemetry.update();
+                //telemetry.update();
             }
-            */
+            
 
             // Bucket arm
             if (gamepad2.dpad_down) {
@@ -182,7 +182,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 //telemetry.update();
             }
             bucket.setPower(0);
-            
+
             if(gamepad2.x){
                 bucket.setPower(-1);
                 //telemetry.update();
