@@ -121,14 +121,14 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             // For hanging arm
             if (gamepad2.y){ // Move up
                 wormGear.setPower(1);
-                muscle.setPower(1);
+                muscle.setPower(-1);
             }
             wormGear.setPower(0);
             muscle.setPower(0);
 
             if (gamepad2.a){ // Move down
                 wormGear.setPower(-1);
-                muscle.setPower(-1);
+                muscle.setPower(1);
             }
             wormGear.setPower(0);
             muscle.setPower(0);
