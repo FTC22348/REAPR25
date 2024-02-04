@@ -11,6 +11,7 @@ Motors:
 - Motor Back Right - Expansion 2
 - Spinner - Control 0
 - Worm gear - Expansion 0
+- Muscle - Expansion 3
 
 Servos: 
 - Rack and Pinion - Expansion 5
@@ -48,6 +49,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         // motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);  // This was connected on the expansion hub, it needs to be reversed
 
         DcMotor wormGear = hardwareMap.dcMotor.get("wormGear"); // Port 0
+        DCMotor muscle = hardwareMap.dcMotor.get("muscle"); // Port 3
         DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0
 
         // Airplane launcher setup
@@ -119,13 +121,17 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             // For hanging arm
             if (gamepad2.y){ // Move up
                 wormGear.setPower(1);
+                muscle.setPower(1);
             }
             wormGear.setPower(0);
+            muscle.setPower(0);
 
             if (gamepad2.a){ // Move down
                 wormGear.setPower(-1);
+                muscle.setPower(-1);
             }
             wormGear.setPower(0);
+            muscle.setPower(0);
 
 
             // Spinner (intake) motor

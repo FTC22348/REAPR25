@@ -40,8 +40,7 @@ public class Reapr_Auton24 extends LinearOpMode {
     static final double TURN_SPEED = 0.4;
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     private static final String TFOD_MODEL_ASSET = "sewey.tflite";
-    private static final String VUFORIA_KEY =
-            "AcJWPiP/////AAABmRv0x6fBjk9rr2cVNe/65PMBQNZEE0OHUmJE6gJQfJrlvCAt/5rKCJ/7Sz9zJxCm+GXOmSArVpbJfrEOkQF9nRfrq3rkh8xHnSKc4tIl2KT7x9s2ev8d8S/mzJ+1NjqV7CBPVS7dFUqzcTgoqnuZgUJG/pzAFgCBJdkQdUDUMy8/qOdWuz8B8GthAKc5cmSFyBvvwk7y4Edmv/pqIwLiwP+M2H/13o/jySsQu6OctKGUSUMpvwX0Zd6BrmeaA9EVzAyWoURqzPkwQN1PBSUQVujQ6s1KZEDhhWs6EDzrcL66P35+7GVNSWEJYFTzdxeOjFNyv/tl5SoaKK0my47Fxid2Ta0Lm/OZx991/+kUBBga";
+    private static final String VUFORIA_KEY = "AcJWPiP/////AAABmRv0x6fBjk9rr2cVNe/65PMBQNZEE0OHUmJE6gJQfJrlvCAt/5rKCJ/7Sz9zJxCm+GXOmSArVpbJfrEOkQF9nRfrq3rkh8xHnSKc4tIl2KT7x9s2ev8d8S/mzJ+1NjqV7CBPVS7dFUqzcTgoqnuZgUJG/pzAFgCBJdkQdUDUMy8/qOdWuz8B8GthAKc5cmSFyBvvwk7y4Edmv/pqIwLiwP+M2H/13o/jySsQu6OctKGUSUMpvwX0Zd6BrmeaA9EVzAyWoURqzPkwQN1PBSUQVujQ6s1KZEDhhWs6EDzrcL66P35+7GVNSWEJYFTzdxeOjFNyv/tl5SoaKK0my47Fxid2Ta0Lm/OZx991/+kUBBga";
     /**
      * {@link #tfod} is the variable we will use to store our instance of the TensorFlow Object
      * Detection engine.
@@ -79,8 +78,9 @@ public class Reapr_Auton24 extends LinearOpMode {
      */
     private VuforiaLocalizer vuforia;
 
-    @Override
 
+
+    @Override
 
     public void runOpMode() {
 
@@ -189,6 +189,7 @@ public class Reapr_Auton24 extends LinearOpMode {
 
 
                 telemetryAprilTag();
+
                 if (detectedAprilTag == 1) { //Blue 1
 
                 } else if (detectedAprilTag == 2) { //Blue 2
@@ -207,7 +208,7 @@ public class Reapr_Auton24 extends LinearOpMode {
 
         // Save more CPU resources when camera is no longer needed.
         visionPortal.close();
-    }
+    } //end of RunOp
 
     /**
      * Initialize the AprilTag processor.
