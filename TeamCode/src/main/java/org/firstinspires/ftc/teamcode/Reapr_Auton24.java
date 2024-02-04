@@ -180,7 +180,7 @@ public class Reapr_Auton24 extends LinearOpMode {
                 int generatedScenario = telemetryTfod();
 
                 if (generatedScenario == 1) { //Roll 1
-
+                    
                 } else if (generatedScenario == 2) { //Roll 2
 
                 } else if (generatedScenario == 3) { //Roll 3
