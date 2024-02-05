@@ -12,6 +12,7 @@ Motors:
 - Spinner - Control 0
 - Worm gear - Expansion 0
 - Muscle - Main 3
+- Spool - Expansion 3
 
 Servos: 
 - Rack and Pinion - Expansion 5
@@ -51,6 +52,8 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         DcMotor wormGear = hardwareMap.dcMotor.get("wormGear"); // Port 0
         DcMotor muscle = hardwareMap.dcMotor.get("muscle"); // Port 3
         DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0
+
+        DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
 
         // Airplane launcher setup
         Servo launcher = hardwareMap.servo.get("launcher");
@@ -188,7 +191,15 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 //telemetry.update();
             }
             bucket.setPower(0);
-        
+
+            // Spool
+            if (gamepad2.dpad_left){
+                spool.setPower(1);
+            }
+            spool.setPower(0);
+            if (gamepad2.dpad_right) {
+                spool.setPower(-1);
+            } spool.setPower(0);
         }
     }
 }
