@@ -1,3 +1,32 @@
+/* Copyright (c) 2019 FIRST. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted (subject to the limitations in the disclaimer below) provided that
+ * the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this list
+ * of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of FIRST nor the names of its contributors may be used to endorse or
+ * promote products derived from this software without specific prior written permission.
+ *
+ * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
+ * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -22,12 +51,19 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
-import android.util.Size;
 
-@Autonomous(name = "Close Blue")
+/*
+ * This OpMode illustrates the basics of TensorFlow Object Detection,
+ * including Java Builder structures for specifying Vision parameters.
+ *
+ * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
+ */
+@Autonomous(name = "RED AUTON FINAL", group = "Concept")
 
-public class closeBlue extends LinearOpMode {
+public class AUTONRED extends LinearOpMode {
 
+    private boolean hasTargets;
     private int generatedScenario;
 
     DcMotor motorFrontLeft;
@@ -45,55 +81,37 @@ public class closeBlue extends LinearOpMode {
     static final double DRIVE_GEAR_REDUCTION = 1.75;
     static final double WHEEL_DIAMETER_INCHES = 3.78;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
+            (WHEEL_DIAMETER_INCHES * 3.14159);
     static final double DRIVE_SPEED = 0.6;
-    static final double TURN_SPEED = 0.4;
+    static final double TURN_SPEED = 0.2;
 
-    private static final boolean USE_WEBCAM = true; // true for webcam, false for phone camera
+    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
+
+    // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
+    // this is only used for Android Studio when using models in Assets.
+    private static final String TFOD_MODEL_ASSET = "redTest1.tflite";
+    // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
+    // this is used when uploading models directly to the RC using the model upload interface.
+    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/redTest1.tflite";
+    // Define the labels recognized in the model for TFOD (must be in training order!)
+    private static final String[] LABELS = {
+            "red",
+    };
+
+
+    private double targetX;
 
     /**
-     * The variable to store our instance of the AprilTag processor.
+     * The variable to store our instance of the TensorFlow Object Detection processor.
      */
-    private AprilTagProcessor aprilTag;
+    private TfodProcessor tfod;
 
     /**
      * The variable to store our instance of the vision portal.
      */
     private VisionPortal visionPortal;
 
-    private int detectedAprilTag;
-
-    /**
-     * The variable to store our instance of the TensorFlow Object Detection
-     * processor.
-     */
-    private TfodProcessor tfod;
-
-    private static final String TFOD_MODEL_FILE = "blueTest1.tflite";
-    // private static final String TFOD_MODEL_FILE =
-    // "/sdcard/FIRST/tflitemodels/CustomTeamModel.tflite";
-
-    //private static final String VUFORIA_KEY = "AcJWPiP/////AAABmRv0x6fBjk9rr2cVNe/65PMBQNZEE0OHUmJE6gJQfJrlvCAt/5rKCJ/7Sz9zJxCm+GXOmSArVpbJfrEOkQF9nRfrq3rkh8xHnSKc4tIl2KT7x9s2ev8d8S/mzJ+1NjqV7CBPVS7dFUqzcTgoqnuZgUJG/pzAFgCBJdkQdUDUMy8/qOdWuz8B8GthAKc5cmSFyBvvwk7y4Edmv/pqIwLiwP+M2H/13o/jySsQu6OctKGUSUMpvwX0Zd6BrmeaA9EVzAyWoURqzPkwQN1PBSUQVujQ6s1KZEDhhWs6EDzrcL66P35+7GVNSWEJYFTzdxeOjFNyv/tl5SoaKK0my47Fxid2Ta0Lm/OZx991/+kUBBga";
-
-    /**
-     * {@link #vuforia} is the variable we will use to store our instance of the
-     * Vuforia
-     * localization engine.
-     */
-    //private VuforiaLocalizer vuforia;
-
-    /**
-     * {@link #tfod} is the variable we will use to store our instance of the
-     * TensorFlow Object
-     * Detection engine.
-     */
-
-    private static final String[] LABELS = {
-            "blue"
-    };
-
     @Override
-
     public void runOpMode() {
 
         // Initialize the IMU and its parameters.
@@ -157,89 +175,58 @@ public class closeBlue extends LinearOpMode {
         telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
         telemetry.update();
 
-        // variable for how fast the robot will move
-        double DRIVE_SPEED = 0.5;
-
         initTfod();
-        initAprilTag();
-
-        waitForStart();
-
-        telemetry.update();
-
-        // encoderDrive(DRIVE_SPEED, 12, 12, 12, 12, 5.0);
-        // rotate(90, TURN_SPEED);
-        // encoderDrive(DRIVE_SPEED, -12, -12, -12, -12, 5.0);
-
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
 
         // Wait for the DS start button to be touched.
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
         telemetry.addData(">", "Touch Play to start OpMode");
         telemetry.update();
-
         waitForStart();
-        // # DETECTING THE LOCATION OF THE CUSTON SIGNAL
 
+        //INSERT ENCODER DRIVE METHODS HERE!!!
+        //frontLeft, frontRight, backLeft, backRight
         sleep(4000);
-
-        if (generatedScenario == 1) {
-            // scenario 1
-            encoderDrive(DRIVE_SPEED, 12, 12, 12, 12, 5.0); // go forward 1 square
-            //encoderDrive(DRIVE_SPEED, -6, 6, 6, -6, 5.0); // strafe left 0.5 square
-            //encoderDrive(DRIVE_SPEED, -9, -9, -9, -9, 5.0); // go back 1 square
-            //encoderDrive(DRIVE_SPEED, -5, 5, 5, -5, 5.0); // strafe to the left backdrop
-            // turn counterclockwise 90 degrees
-            // robot shld be @ board
-
-            if (detectedAprilTag == 1) {
-                // perfect
-            } else if (detectedAprilTag == 2) {
-                // a lil to the left
-            } else if (detectedAprilTag == 3) {
-                // gotta move more left
+        telemetryTfod();
+        telemetryTfod();
+        telemetryTfod();
+        encoderDrive(DRIVE_SPEED, 3, 3, 3, 3, 0.5);
+        if(hasTargets){
+            //DOWN THE MIDDLE
+            encoderDrive(DRIVE_SPEED, 21, 21, 21, 21, 5);
+            encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5);
+        } else {
+            encoderDrive(DRIVE_SPEED, -6, 6, 6, -6, 1);
+            sleep(4000);
+            telemetryTfod();
+            telemetryTfod();
+            telemetryTfod();
+            if(hasTargets){
+                encoderDrive(DRIVE_SPEED, 6, -6, -6, 6, 1);
+                encoderDrive(DRIVE_SPEED, 14, 14, 14, 14, 1);
+                rotate(90,TURN_SPEED);
+                encoderDrive(DRIVE_SPEED, -5, -5, -5, -5, 1);
+                encoderDrive(DRIVE_SPEED, 5, -5, -5, 5, 1);
+                encoderDrive(DRIVE_SPEED, 8, 8, 8, 8, 1);
+                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5);
+                //TO THE LEFT
+            } else {
+                encoderDrive(DRIVE_SPEED, 6, -6, -6, 6, 1);
+                encoderDrive(DRIVE_SPEED, 14, 14, 14, 14, 1);
+                rotate(-80,TURN_SPEED);
+                encoderDrive(DRIVE_SPEED, -7, -7, -7, -7, 1);
+                encoderDrive(DRIVE_SPEED, -7, 7, 7, -7, 1);
+                encoderDrive(DRIVE_SPEED, 10, 10, 10, 10, 1);
+                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5);
+                //TO THE RIGHT
             }
-
-        } else if (generatedScenario == 2) {
-            // scenario 2
-            encoderDrive(DRIVE_SPEED, 18, 18, 18, 18, 5.0); // go forward 1.5 square
-            encoderDrive(DRIVE_SPEED, -9, -9, -9, -9, 5.0); // go back 1 square
-            encoderDrive(DRIVE_SPEED, -30, 30, 30, -30, 5.0); // strafe left (to backdrop)
-            // turn counterclockwise 90 degrees
-            // robot shld be @ board
-
-            if (detectedAprilTag == 1) {
-                // a lil to the right
-            } else if (detectedAprilTag == 2) {
-                // perfect
-            } else if (detectedAprilTag == 3) {
-                // a lil to the left
-            }
-
-        } else if (generatedScenario == 3) {
-            // scenario 3
-            encoderDrive(DRIVE_SPEED, 12, 12, 12, 12, 5.0); // go forward 1 square
-            encoderDrive(DRIVE_SPEED, 6, -6, -6, 6, 5.0); // strafe right 0.5 square
-            encoderDrive(DRIVE_SPEED, -9, -9, -9, -9, 5.0); // go back 1 square
-            encoderDrive(DRIVE_SPEED, -30, 30, 30, -30, 5.0); // strafe to the left backdrop
-            // turn counterclockwise 90 degrees
-            // robot shld be @ board
-
-            if (detectedAprilTag == 1) {
-                // gotto move more right
-            } else if (detectedAprilTag == 2) {
-                // a lil to the right
-            } else if (detectedAprilTag == 3) {
-                // perfect
-            }
-
         }
+
+
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-                telemetryAprilTag();
-                // int detectedAprilTag changes
+
+                telemetryTfod();
 
                 // Push telemetry to the Driver Station.
                 telemetry.update();
@@ -251,59 +238,98 @@ public class closeBlue extends LinearOpMode {
 
         // Save more CPU resources when camera is no longer needed.
         visionPortal.close();
-    }
+
+    }   // end runOpMode()
 
     /**
-     * Initialize the AprilTag processor.
+     * Initialize the TensorFlow Object Detection processor.
      */
-    private void initAprilTag() {
+    private void initTfod() {
 
-        // Create the AprilTag processor the easy way.
-        aprilTag = AprilTagProcessor.easyCreateWithDefaults();
+        // Create the TensorFlow processor by using a builder.
+        tfod = new TfodProcessor.Builder()
 
-        // Create the vision portal the easy way.
+                // With the following lines commented out, the default TfodProcessor Builder
+                // will load the default model for the season. To define a custom model to load,
+                // choose one of the following:
+                //   Use setModelAssetName() if the custom TF Model is built in as an asset (AS only).
+                //   Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
+                //.setModelAssetName(TFOD_MODEL_ASSET)
+
+                //.setModelAssetName(TFOD_MODEL_ASSET)
+                .setModelFileName(TFOD_MODEL_FILE)
+
+                // The following default settings are available to un-comment and edit as needed to
+                // set parameters for custom models.
+                //.setModelLabels(LABELS)
+                //.setIsModelTensorFlow2(true)
+                //.setIsModelQuantized(true)
+                //.setModelInputSize(300)
+                //.setModelAspectRatio(16.0 / 9.0)
+
+                .build();
+
+        // Create the vision portal by using a builder.
+        VisionPortal.Builder builder = new VisionPortal.Builder();
+
+        // Set the camera (webcam vs. built-in RC phone camera).
         if (USE_WEBCAM) {
-            visionPortal = VisionPortal.easyCreateWithDefaults(
-                    hardwareMap.get(WebcamName.class, "Webcam 1"), aprilTag);
+            builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
         } else {
-            visionPortal = VisionPortal.easyCreateWithDefaults(
-                    BuiltinCameraDirection.BACK, aprilTag);
+            builder.setCamera(BuiltinCameraDirection.BACK);
         }
 
-    } // end method initAprilTag()
+        // Choose a camera resolution. Not all cameras support all resolutions.
+        //builder.setCameraResolution(new Size(640, 480));
+
+        // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
+        //builder.enableLiveView(true);
+
+        // Set the stream format; MJPEG uses less bandwidth than default YUY2.
+        //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
+
+        // Choose whether or not LiveView stops if no processors are enabled.
+        // If set "true", monitor shows solid orange screen if no processors enabled.
+        // If set "false", monitor shows camera view without annotations.
+        //builder.setAutoStopLiveView(false);
+
+        // Set and enable the processor.
+        builder.addProcessor(tfod);
+
+        // Build the Vision Portal, using the above settings.
+        visionPortal = builder.build();
+
+        // Set confidence threshold for TFOD recognitions, at any time.
+        //tfod.setMinResultConfidence(0.75f);
+
+        // Disable or re-enable the TFOD processor at any time.
+        //visionPortal.setProcessorEnabled(tfod, true);
+
+    }   // end method initTfod()
 
     /**
-     * Add telemetry about AprilTag detections.
+     * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
-    private void telemetryAprilTag() {
+    private void telemetryTfod() {
 
-        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-        telemetry.addData("# AprilTags Detected", currentDetections.size());
+        List<Recognition> currentRecognitions = tfod.getRecognitions();
+        telemetry.addData("# Objects Detected", currentRecognitions.size());
 
-        // Step through the list of detections and display info for each one.
-        for (AprilTagDetection detection : currentDetections) {
-            if (detection.metadata != null) {
-                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
-                detectedAprilTag = detection.id;
-                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x,
-                        detection.ftcPose.y, detection.ftcPose.z));
-                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch,
-                        detection.ftcPose.roll, detection.ftcPose.yaw));
-                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range,
-                        detection.ftcPose.bearing, detection.ftcPose.elevation));
-            } else {
-                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
-                telemetry.addLine(
-                        String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
-            }
-        } // end for() loop
+        if(currentRecognitions.size()>0){hasTargets = true;}
+        else {hasTargets = false;}
 
-        // Add "key" information to telemetry
-        telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
-        telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
-        telemetry.addLine("RBE = Range, Bearing & Elevation");
+        // Step through the list of recognitions and display info for each one.
+        for (Recognition recognition : currentRecognitions) {
+            targetX = (recognition.getLeft() + recognition.getRight()) / 2 ;
+            double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
 
-    } // end method telemetryAprilTag()
+            telemetry.addData(""," ");
+            telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+            telemetry.addData("- Position", "%.0f / %.0f", targetX, y);
+            telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
+        }   // end for() loop
+
+    }   // end method telemetryTfod()
 
     // Method for driving with encoder
     public void encoderDrive(double speed,
@@ -447,92 +473,4 @@ public class closeBlue extends LinearOpMode {
         globalAngle = 0;
     }
 
-    //private void initVuforia() {
-    //    /*
-    //     * Configure Vuforia by creating a Parameter object, and passing it to the
-    //     * Vuforia engine.
-    //     */
-    //    VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-//
-    //      parameters.vuforiaLicenseKey = VUFORIA_KEY;
-    //    parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
-//
-    // Instantiate the Vuforia engine
-    //      vuforia = ClassFactory.getInstance().createVuforia(parameters);
-    //}
-
-    private void initTfod() {
-
-        TfodProcessor myTfodProcessor;
-
-        myTfodProcessor = new TfodProcessor.Builder()
-                .setMaxNumRecognitions(10)
-                .setUseObjectTracker(true)
-                .setTrackerMaxOverlap((float) 0.2)
-                .setTrackerMinSize(16)
-                .build();
-
-        // Create the vision portal by using a builder.
-        VisionPortal.Builder builder = new VisionPortal.Builder();
-
-        // Set the camera (webcam vs. built-in RC phone camera).
-        if (USE_WEBCAM) {
-            builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
-        } else {
-            builder.setCamera(BuiltinCameraDirection.BACK);
-        }
-
-        Size size = new Size(640,480);
-        builder.setCameraResolution(size);
-        builder.enableLiveView(true);
-
-        builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
-
-        // Choose whether or not LiveView stops if no processors are enabled.
-        // If set "true", monitor shows solid orange screen if no processors enabled.
-        // If set "false", monitor shows camera view without annotations.
-        //builder.setAutoStopLiveView(false);
-
-        // Set and enable the processor.
-        builder.addProcessor(tfod);
-
-        // Build the Vision Portal, using the above settings.
-        visionPortal = builder.build();
-
-        myTfodProcessor.setMinResultConfidence(0.70f);
-
-        // Disable or re-enable the TFOD processor at any time.
-        //visionPortal.setProcessorEnabled(tfod, true);
-
-    } // end method initTfod()
-
-    /**
-     * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
-     */
-    private void telemetryTfod() {
-
-        List<Recognition> currentRecognitions = tfod.getRecognitions();
-        telemetry.addData("# Objects Detected", currentRecognitions.size());
-
-        // Step through the list of recognitions and display info for each one.
-        for (Recognition recognition : currentRecognitions) {
-            double x = (recognition.getLeft() + recognition.getRight()) / 2;
-            double y = (recognition.getTop() + recognition.getBottom()) / 2;
-
-            telemetry.addData("", " ");
-            telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
-            telemetry.addData("- Position", "%.0f / %.0f", x, y);
-            telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
-
-            if (x < 200) {
-                generatedScenario = 1;
-            } else if (200 < x && x < 440) {
-                generatedScenario = 2;
-            } else {
-                generatedScenario = 3;
-            }
-        } // end for() loop
-
-    } // end method telemetryTfod()
-
-}
+}   // end class

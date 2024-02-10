@@ -15,8 +15,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
@@ -24,9 +22,9 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import java.util.List;
 import android.util.Size;
 
-@Autonomous(name = "Close Blue")
+@Autonomous(name = "Red Far")
 
-public class closeBlue extends LinearOpMode {
+public class farRed extends LinearOpMode {
 
     private int generatedScenario;
 
@@ -52,16 +50,9 @@ public class closeBlue extends LinearOpMode {
     private static final boolean USE_WEBCAM = true; // true for webcam, false for phone camera
 
     /**
-     * The variable to store our instance of the AprilTag processor.
-     */
-    private AprilTagProcessor aprilTag;
-
-    /**
      * The variable to store our instance of the vision portal.
      */
     private VisionPortal visionPortal;
-
-    private int detectedAprilTag;
 
     /**
      * The variable to store our instance of the TensorFlow Object Detection
@@ -69,7 +60,7 @@ public class closeBlue extends LinearOpMode {
      */
     private TfodProcessor tfod;
 
-    private static final String TFOD_MODEL_FILE = "blueTest1.tflite";
+    private static final String TFOD_MODEL_FILE = "redTest1.tflite";
     // private static final String TFOD_MODEL_FILE =
     // "/sdcard/FIRST/tflitemodels/CustomTeamModel.tflite";
 
@@ -160,6 +151,9 @@ public class closeBlue extends LinearOpMode {
         // variable for how fast the robot will move
         double DRIVE_SPEED = 0.5;
 
+
+
+
         initTfod();
         initAprilTag();
 
@@ -186,60 +180,28 @@ public class closeBlue extends LinearOpMode {
 
         if (generatedScenario == 1) {
             // scenario 1
-            encoderDrive(DRIVE_SPEED, 12, 12, 12, 12, 5.0); // go forward 1 square
+            //encoderDrive(DRIVE_SPEED, 12, 12, 12, 12, 5.0); // go forward 1 square
             //encoderDrive(DRIVE_SPEED, -6, 6, 6, -6, 5.0); // strafe left 0.5 square
-            //encoderDrive(DRIVE_SPEED, -9, -9, -9, -9, 5.0); // go back 1 square
-            //encoderDrive(DRIVE_SPEED, -5, 5, 5, -5, 5.0); // strafe to the left backdrop
-            // turn counterclockwise 90 degrees
-            // robot shld be @ board
+            //encoderDrive(DRIVE_SPEED, -6, -6, -6, -6, 5.0); // go back 1 square
 
-            if (detectedAprilTag == 1) {
-                // perfect
-            } else if (detectedAprilTag == 2) {
-                // a lil to the left
-            } else if (detectedAprilTag == 3) {
-                // gotta move more left
-            }
 
         } else if (generatedScenario == 2) {
             // scenario 2
-            encoderDrive(DRIVE_SPEED, 18, 18, 18, 18, 5.0); // go forward 1.5 square
-            encoderDrive(DRIVE_SPEED, -9, -9, -9, -9, 5.0); // go back 1 square
-            encoderDrive(DRIVE_SPEED, -30, 30, 30, -30, 5.0); // strafe left (to backdrop)
-            // turn counterclockwise 90 degrees
-            // robot shld be @ board
+            //encoderDrive(DRIVE_SPEED, 18, 18, 18, 18, 5.0);// go forward 1.5 square
+            //encoderDrive(DRIVE_SPEED, -12, -12, -12, -12, 5.0); // go back 1 square
 
-            if (detectedAprilTag == 1) {
-                // a lil to the right
-            } else if (detectedAprilTag == 2) {
-                // perfect
-            } else if (detectedAprilTag == 3) {
-                // a lil to the left
-            }
 
         } else if (generatedScenario == 3) {
             // scenario 3
-            encoderDrive(DRIVE_SPEED, 12, 12, 12, 12, 5.0); // go forward 1 square
-            encoderDrive(DRIVE_SPEED, 6, -6, -6, 6, 5.0); // strafe right 0.5 square
-            encoderDrive(DRIVE_SPEED, -9, -9, -9, -9, 5.0); // go back 1 square
-            encoderDrive(DRIVE_SPEED, -30, 30, 30, -30, 5.0); // strafe to the left backdrop
-            // turn counterclockwise 90 degrees
-            // robot shld be @ board
+            //encoderDrive(DRIVE_SPEED, 12, 12, 12, 12, 5.0); // go forward 1 square
+            //encoderDrive(DRIVE_SPEED, 6, -6, -6, 6, 5.0); // strafe right 0.5 square
+            //encoderDrive(DRIVE_SPEED, -6, -6, -6, -6, 5.0); // go back 1 square
 
-            if (detectedAprilTag == 1) {
-                // gotto move more right
-            } else if (detectedAprilTag == 2) {
-                // a lil to the right
-            } else if (detectedAprilTag == 3) {
-                // perfect
-            }
 
         }
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-                telemetryAprilTag();
-                // int detectedAprilTag changes
 
                 // Push telemetry to the Driver Station.
                 telemetry.update();
@@ -250,27 +212,10 @@ public class closeBlue extends LinearOpMode {
         }
 
         // Save more CPU resources when camera is no longer needed.
-        visionPortal.close();
+        //visionPortal.close();
     }
 
-    /**
-     * Initialize the AprilTag processor.
-     */
-    private void initAprilTag() {
 
-        // Create the AprilTag processor the easy way.
-        aprilTag = AprilTagProcessor.easyCreateWithDefaults();
-
-        // Create the vision portal the easy way.
-        if (USE_WEBCAM) {
-            visionPortal = VisionPortal.easyCreateWithDefaults(
-                    hardwareMap.get(WebcamName.class, "Webcam 1"), aprilTag);
-        } else {
-            visionPortal = VisionPortal.easyCreateWithDefaults(
-                    BuiltinCameraDirection.BACK, aprilTag);
-        }
-
-    } // end method initAprilTag()
 
     /**
      * Add telemetry about AprilTag detections.
