@@ -344,6 +344,8 @@ public class AUTONRED extends LinearOpMode {
         int newBackLeftTarget;
         int newBackRightTarget;
 
+        // Reset Motors
+
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
@@ -369,6 +371,7 @@ public class AUTONRED extends LinearOpMode {
             motorBackRight.setPower(Math.abs(speed));
             motorFrontLeft.setPower(Math.abs(speed));
             motorFrontRight.setPower(Math.abs(speed));
+
 
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
@@ -397,7 +400,10 @@ public class AUTONRED extends LinearOpMode {
             motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+
         }
+
+        // Reset Motors
 
     }
 

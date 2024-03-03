@@ -10,8 +10,8 @@ Motors:
 - Motor Front Right - Expansion 1
 - Motor Back Right - Expansion 2
 - Spinner - Control 0
-- Worm gear - Expansion 0
-- Muscle - Main 3
+- Worm gear - Expansion 0 (Right Side)
+- Muscle - Main 3 (Left Side)
 - Spool - Expansion 3
 
 Servos: 
@@ -51,7 +51,8 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
 
         DcMotor wormGear = hardwareMap.dcMotor.get("wormGear"); // Port 0
         DcMotor muscle = hardwareMap.dcMotor.get("muscle"); // Port 3
-        DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0
+        // DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0 (intake is a servo now)
+        DcMotor intake = hardwareMap.servo.get("intake");
 
         DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
 
@@ -124,13 +125,13 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             // For hanging arm
             if (gamepad2.y){ // Move up
                 wormGear.setPower(1);
-                muscle.setPower(-1);
+                muscle.setPower(1);
             }
             wormGear.setPower(0);
             muscle.setPower(0);
 
             if (gamepad2.a){ // Move down
-                wormGear.setPower(-1);
+                wormGear.setPower(1);
                 muscle.setPower(1);
             }
             wormGear.setPower(0);
@@ -139,9 +140,9 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
 
             // Spinner (intake) motor
             if (gamepad1.a){ // Move down
-                spinner.setPower(1);
+                intake.setPower(1);
             }
-            spinner.setPower(0);
+            intake.setPower(0);
 
             if (gamepad1.y){ // Move up
                 spinner.setPower(-1);
