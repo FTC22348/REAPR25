@@ -19,11 +19,13 @@ Servos:
 - Bucket - Expansion 2
 - Servo arm - Expansion 3
 - Drone - Expansion 5
-- Intake - Expansion 1
+- Intake - Main 1
+- Ramp - Main 2
 */
 
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -40,9 +42,9 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
 
         // Meccanum Drivetrain
         DcMotor motorFrontLeft = hardwareMap.dcMotor.get("motorFrontLeft");
-        DcMotor motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft"); 
-        DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight"); 
-        DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight"); 
+        DcMotor motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
+        DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
+        DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -53,7 +55,8 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         DcMotor wormGear = hardwareMap.dcMotor.get("wormGear"); // Port 0
         DcMotor muscle = hardwareMap.dcMotor.get("muscle"); // Port 3
         // DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0 (intake is a servo now)
-        DcMotor intake = hardwareMap.servo.get("intake");
+        CRServo intake = hardwareMap.crservo.get("intake");
+        CRServo ramp = hardwareMap.crservo.get("ramp");
 
         DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
 
@@ -62,8 +65,8 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         CRServo bucketArm = hardwareMap.crservo.get("bucketArm");
         CRServo bucket = hardwareMap.crservo.get("bucket");
 
- 
-        /* 
+
+        /*
         double launcherPosition = 0.5;
         final double launcherSpeed = 0.1;// change to 100th when button is hold
         final double launcherMinRange = 0.3;
@@ -132,8 +135,8 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             muscle.setPower(0);
 
             if (gamepad2.a){ // Move down
-                wormGear.setPower(1);
-                muscle.setPower(1);
+                wormGear.setPower(-1);
+                muscle.setPower(-1);
             }
             wormGear.setPower(0);
             muscle.setPower(0);
@@ -142,31 +145,35 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             // Spinner (intake) motor
             if (gamepad1.a){ // Move down
                 intake.setPower(1);
+                ramp.setPower(-1);
             }
             intake.setPower(0);
+            ramp.setPower(0);
 
             if (gamepad1.y){ // Move up
-                spinner.setPower(-1);
+                intake.setPower(-1);
+                ramp.setPower(1);
             }
-            spinner.setPower(0);
+            intake.setPower(0);
+            ramp.setPower(0);
 
 
 
             //! Servo Controls
 
             // Drone Launcher
-            
+
             //telemetry.addData("Drone launcher", "%.2f", launcherPosition); //displays the values on the driver hub
             //telemetry.update();
             if (gamepad1.b) {
-                launcher.setPosition(-1);
+                //launcher.setPower(-1);
                 //telemetry.update();
             }
             else if (gamepad1.x){
-                launcher.setPosition(1);
+                //launcher.setPower(1);
                 //telemetry.update();
             }
-            
+
 
             // Bucket arm
             if (gamepad2.dpad_down) {
@@ -174,7 +181,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 //telemetry.update();
             }
             bucketArm.setPower(0);
-            
+
             if (gamepad2.dpad_up){
                 bucketArm.setPower(1);
             }
