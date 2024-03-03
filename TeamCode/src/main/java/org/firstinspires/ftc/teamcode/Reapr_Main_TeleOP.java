@@ -19,6 +19,7 @@ Servos:
 - Bucket - Expansion 2
 - Servo arm - Expansion 3
 - Drone - Expansion 5
+- Intake - Expansion 1
 */
 
 package org.firstinspires.ftc.teamcode;
