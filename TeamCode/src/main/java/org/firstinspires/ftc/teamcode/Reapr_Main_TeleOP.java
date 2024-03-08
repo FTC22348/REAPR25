@@ -21,6 +21,7 @@ Servos:
 - Drone - Expansion 5
 - Intake - Main 1
 - Ramp - Main 2
+- Hinge - Main 4
 */
 
 package org.firstinspires.ftc.teamcode;
@@ -35,6 +36,8 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name = "TeleOP")
 
 public class Reapr_Main_TeleOP extends LinearOpMode {
+    double hingePosition;
+    double  MIN_POSITION = 0, MAX_POSITION = 1;
     @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors
@@ -45,11 +48,6 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
-
-        motorFrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -62,8 +60,9 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         // DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0 (intake is a servo now)
         CRServo intake = hardwareMap.crservo.get("intake");
         CRServo ramp = hardwareMap.crservo.get("ramp");
+        Servo hinge = hardwareMap.servo.get("hinge");
 
-        DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
+        //DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
 
         // Airplane launcher setup
         Servo launcher = hardwareMap.servo.get("launcher");
@@ -82,6 +81,8 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
 
 
         waitForStart();
+
+        hingePosition = 0.1;
 
         if (isStopRequested()) return;
 
@@ -170,11 +171,11 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             //telemetry.addData("Drone launcher", "%.2f", launcherPosition); //displays the values on the driver hub
             //telemetry.update();
             if (gamepad1.b) {
-                launcher.setPower(-1);
+                //launcher.setPower(-1);
                 //telemetry.update();
             }
             else if (gamepad1.x){
-                launcher.setPower(1);
+                //launcher.setPower(1);
                 //telemetry.update();
             }
 
@@ -205,14 +206,26 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             }
             bucket.setPower(0);
 
+            // move hinge down on dpad left button if not already at lowest position.
+            if (gamepad2.dpad_left && hingePosition > MIN_POSITION) hingePosition -= .01;
+
+            // move hinge up on dpad right button if not already at the highest position.
+            if (gamepad2.dpad_right && hingePosition < MAX_POSITION) hingePosition += .01;
+
+            hinge.setPosition(Range.clip(hingePosition, MIN_POSITION, MAX_POSITION));
+            telemetry.addData("hinge servo", "position=" + hingePosition + "  actual=" + hinge.getPosition());
+            telemetry.update();
+
             // Spool
-            if (gamepad2.dpad_left){
-                spool.setPower(1);
+            /*
+           if (gamepad2.dpad_left){
+              spool.setPower(1);
             }
             spool.setPower(0);
             if (gamepad2.dpad_right) {
                 spool.setPower(-1);
             } spool.setPower(0);
+            */
         }
     }
 }
