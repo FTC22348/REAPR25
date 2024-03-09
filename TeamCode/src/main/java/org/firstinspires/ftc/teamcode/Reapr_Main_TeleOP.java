@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.util.Range;
 
 public class Reapr_Main_TeleOP extends LinearOpMode {
     double hingePosition;
+    double launcherPosition;
     double  MIN_POSITION = 0, MAX_POSITION = 1;
     @Override
     public void runOpMode() throws InterruptedException {
@@ -58,23 +59,23 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         DcMotor wormGear = hardwareMap.dcMotor.get("wormGear"); // Port 0
         DcMotor muscle = hardwareMap.dcMotor.get("muscle"); // Port 3
         // DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0 (intake is a servo now)
+
+        // Intake setup
         CRServo intake = hardwareMap.crservo.get("intake");
         CRServo ramp = hardwareMap.crservo.get("ramp");
+
+        // Hinge set up (hanging)
         Servo hinge = hardwareMap.servo.get("hinge");
-        DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
 
         // Airplane launcher setup
         Servo launcher = hardwareMap.servo.get("launcher");
+
+        // Bucket setup
         CRServo bucketArm = hardwareMap.crservo.get("bucketArm");
         CRServo bucket = hardwareMap.crservo.get("bucket");
 
+        DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
 
-        /*
-        double launcherPosition = 0.5;
-        final double launcherSpeed = 0.1;// change to 100th when button is hold
-        final double launcherMinRange = 0.3;
-        final double launcherMaxRange = 0.55;
-        */
 
         // Rack and pinion setup
 
@@ -82,6 +83,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         waitForStart();
 
         hingePosition = 0.1;
+        launcherPosition = 0.1;
 
         if (isStopRequested()) return;
 
@@ -166,16 +168,16 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
 
             // Drone Launcher
 
-            //telemetry.addData("Drone launcher", "%.2f", launcherPosition); //displays the values on the driver hub
-            //telemetry.update();
-            if (gamepad1.b) {
-                launcher.setPosition(-1);
-                //telemetry.update();
-            }
-            else if (gamepad1.x){
-                launcher.setPosition(1);
-                //telemetry.update();
-            }
+            // move launcher down on x button if not already at lowest position.
+            if (gamepad1.x && launcherPosition > MIN_POSITION) launcherPosition -= .01;
+
+            // move launcher up on b button if not already at the highest position.
+            if (gamepad1.b && hingePosition < MAX_POSITION) launcherPosition += .01;
+
+            launcher.setPosition(Range.clip(launcherPosition, MIN_POSITION, MAX_POSITION));
+            telemetry.addData("launcher servo", "position=" + launcherPosition + "  actual=" + launcher.getPosition());
+            telemetry.update();
+
 
 
             // Bucket arm
@@ -209,6 +211,8 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             hinge.setPosition(Range.clip(hingePosition, MIN_POSITION, MAX_POSITION));
             telemetry.addData("hinge servo", "position=" + hingePosition + "  actual=" + hinge.getPosition());
             telemetry.update();
+
+
 
             // Spool
             if (gamepad2.dpad_left){
