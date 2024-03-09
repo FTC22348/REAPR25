@@ -21,7 +21,6 @@ Servos:
 - Drone - Expansion 5
 - Intake - Main 1
 - Ramp - Main 2
-- Hinge - Main 4
 */
 
 package org.firstinspires.ftc.teamcode;
@@ -36,8 +35,6 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name = "TeleOP")
 
 public class Reapr_Main_TeleOP extends LinearOpMode {
-    double hingePosition;
-    double  MIN_POSITION = 0, MAX_POSITION = 1;
     @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors
@@ -60,9 +57,8 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         // DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0 (intake is a servo now)
         CRServo intake = hardwareMap.crservo.get("intake");
         CRServo ramp = hardwareMap.crservo.get("ramp");
-        Servo hinge = hardwareMap.servo.get("hinge");
 
-        //DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
+        DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
 
         // Airplane launcher setup
         Servo launcher = hardwareMap.servo.get("launcher");
@@ -81,8 +77,6 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
 
 
         waitForStart();
-
-        hingePosition = 0.1;
 
         if (isStopRequested()) return;
 
@@ -129,17 +123,18 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             motorFrontRight.setPower(frontRightPower);
             motorBackRight.setPower(backRightPower);
 
+
             //! Misc motor controls
             // Worm Gear motor Controls
             // For hanging arm
-            if (gamepad2.y){ // Move up
+            if (gamepad2.a){ // Move down
                 wormGear.setPower(1);
                 muscle.setPower(1);
             }
             wormGear.setPower(0);
             muscle.setPower(0);
 
-            if (gamepad2.a){ // Move down
+            if (gamepad2.y){ // Move up
                 wormGear.setPower(-1);
                 muscle.setPower(-1);
             }
@@ -151,16 +146,14 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             if (gamepad1.a){ // Move down
                 intake.setPower(1);
                 ramp.setPower(-1);
-            }
-            intake.setPower(0);
-            ramp.setPower(0);
-
-            if (gamepad1.y){ // Move up
+            }else if (gamepad1.y){ // Move up
                 intake.setPower(-1);
                 ramp.setPower(1);
+            }else{
+                intake.setPower(0);
+                ramp.setPower(0);
             }
-            intake.setPower(0);
-            ramp.setPower(0);
+
 
 
 
@@ -171,61 +164,45 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             //telemetry.addData("Drone launcher", "%.2f", launcherPosition); //displays the values on the driver hub
             //telemetry.update();
             if (gamepad1.b) {
-                //launcher.setPower(-1);
+                launcher.setPosition(-1);
                 //telemetry.update();
             }
             else if (gamepad1.x){
-                //launcher.setPower(1);
+                launcher.setPosition(1);
                 //telemetry.update();
             }
 
 
             // Bucket arm
-            if (gamepad2.dpad_down) {
-                bucketArm.setPower(-1);
-                //telemetry.update();
+            if (gamepad2.dpad_down) { // Go down
+                bucketArm.setPower(-0.75);
+            }else if (gamepad2.dpad_up){ // Go up
+                bucketArm.setPower(0.75);
+            }else{
+                bucketArm.setPower(0);
             }
-            bucketArm.setPower(0);
-
-            if (gamepad2.dpad_up){
-                bucketArm.setPower(1);
-            }
-            bucketArm.setPower(0);
 
 
             // Bucket
             if(gamepad2.b){
                 bucket.setPower(1);
                 //telemetry.update();
-            }
-            bucket.setPower(0);
-
-            if(gamepad2.x){
+            }else if(gamepad2.x){
                 bucket.setPower(-1);
                 //telemetry.update();
+            }else{
+                bucket.setPower(0);
+
             }
-            bucket.setPower(0);
-
-            // move hinge down on dpad left button if not already at lowest position.
-            if (gamepad2.dpad_left && hingePosition > MIN_POSITION) hingePosition -= .01;
-
-            // move hinge up on dpad right button if not already at the highest position.
-            if (gamepad2.dpad_right && hingePosition < MAX_POSITION) hingePosition += .01;
-
-            hinge.setPosition(Range.clip(hingePosition, MIN_POSITION, MAX_POSITION));
-            telemetry.addData("hinge servo", "position=" + hingePosition + "  actual=" + hinge.getPosition());
-            telemetry.update();
 
             // Spool
-            /*
-           if (gamepad2.dpad_left){
-              spool.setPower(1);
+            if (gamepad2.dpad_left){
+                spool.setPower(1);
             }
             spool.setPower(0);
             if (gamepad2.dpad_right) {
                 spool.setPower(-1);
             } spool.setPower(0);
-            */
         }
     }
 }
