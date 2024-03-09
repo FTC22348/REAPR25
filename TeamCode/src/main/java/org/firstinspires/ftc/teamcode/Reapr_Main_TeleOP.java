@@ -5,23 +5,29 @@ Main TeleOP (2 Driver)
 
 Ports:
 Motors:
-- Motor Front Left - Main 1
-- Motor Back Left - Main 2
-- Motor Front Right - Expansion 1
-- Motor Back Right - Expansion 2
-- Spinner - Control 0
-- Worm gear - Expansion 0 (Right Side)
-- Muscle - Main 3 (Left Side)
-- Spool - Expansion 3
+- Spinner Motor - Control 0
+- Front Left Wheel - Control 1
+- Back Left Wheel - Control 2
+- Muscle - Control 3
+- Worm Gear - Expansion 0
+- Front Right Wheel - Expansion 1
+- Back Right Wheel - Expansion 2
+- Spool - Expansion 3 (not using anymore)
 
 Servos: 
-- Rack and Pinion - Expansion 5
-- Bucket - Expansion 2
-- Servo arm - Expansion 3
-- Drone - Expansion 5
-- Intake - Main 1
-- Ramp - Main 2
-- Hinge - Main 4
+- none - Control 0
+- Intake - Control 1
+- Ramp - Control 2
+- Drone Launcher - Control 3
+- Hinge - Control 4
+- Auton Servo - Control 5
+- Arm - Expansion 0
+- none - Expansion 1
+- none - Expansion 2
+- Bucket - Expansion 3
+- none - Expansion 4
+- none - Expansion 5
+- 
 */
 
 package org.firstinspires.ftc.teamcode;
@@ -158,7 +164,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 intake.setPower(0);
                 ramp.setPower(0);
             }
-
+            
 
 
 
@@ -212,8 +218,8 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 hingePosition += .01;
                 hinge.setPosition(Range.clip(hingePosition, MIN_POSITION, MAX_POSITION));
 
-            }
-
+            } 
+            
             telemetry.addData("hinge servo", "position=" + hingePosition + "  actual=" + hinge.getPosition());
             telemetry.update();
 
