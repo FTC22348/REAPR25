@@ -21,6 +21,7 @@ Servos:
 - Drone - Expansion 5
 - Intake - Main 1
 - Ramp - Main 2
+- Hinge - Main 4
 */
 
 package org.firstinspires.ftc.teamcode;
@@ -35,6 +36,8 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name = "TeleOP")
 
 public class Reapr_Main_TeleOP extends LinearOpMode {
+    double hingePosition;
+    double  MIN_POSITION = 0, MAX_POSITION = 1;
     @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors
@@ -57,7 +60,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         // DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0 (intake is a servo now)
         CRServo intake = hardwareMap.crservo.get("intake");
         CRServo ramp = hardwareMap.crservo.get("ramp");
-
+        Servo hinge = hardwareMap.servo.get("hinge");
         DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
 
         // Airplane launcher setup
@@ -77,6 +80,8 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
 
 
         waitForStart();
+
+        hingePosition = 0.1;
 
         if (isStopRequested()) return;
 
@@ -194,6 +199,16 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 bucket.setPower(0);
 
             }
+
+            // move hinge down on dpad left button if not already at lowest position.
+            if (gamepad2.dpad_left && hingePosition > MIN_POSITION) hingePosition -= .01;
+
+            // move hinge up on dpad right button if not already at the highest position.
+            if (gamepad2.dpad_right && hingePosition < MAX_POSITION) hingePosition += .01;
+
+            hinge.setPosition(Range.clip(hingePosition, MIN_POSITION, MAX_POSITION));
+            telemetry.addData("hinge servo", "position=" + hingePosition + "  actual=" + hinge.getPosition());
+            telemetry.update();
 
             // Spool
             if (gamepad2.dpad_left){
