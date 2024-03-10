@@ -69,7 +69,7 @@ public class AUTONBLUE_States extends LinearOpMode {
     DcMotor motorBackLeft;
     DcMotor motorFrontRight;
     DcMotor motorBackRight;
-    Servo autonServo;
+    CRServo autonServo;
     CRServo ramp;
     CRServo bucketArm;
 
@@ -88,7 +88,7 @@ public class AUTONBLUE_States extends LinearOpMode {
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
         (WHEEL_DIAMETER_INCHES * 3.14159);
     static final double DRIVE_SPEED = 0.6;
-    static final double TURN_SPEED = 0.2;
+    static final double TURN_SPEED = 0.4;
 
     private static final boolean USE_WEBCAM = true; // true for webcam, false for phone camera
 
@@ -135,7 +135,7 @@ public class AUTONBLUE_States extends LinearOpMode {
         motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
         motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
         motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
-        autonServo = hardwareMap.servo.get("autonDropServo");
+        autonServo = hardwareMap.crservo.get("autonDropServo");
         ramp = hardwareMap.crservo.get("ramp");
         bucketArm = hardwareMap.crservo.get("bucketArm");
 
@@ -195,7 +195,7 @@ public class AUTONBLUE_States extends LinearOpMode {
         //! Main Code
         //INSERT ENCODER DRIVE METHODS HERE!!!
         //frontLeft, frontRight, backLeft, backRight
-        sleep(2000);
+        sleep(1000);
         telemetryTfod();
 
 
@@ -208,7 +208,7 @@ public class AUTONBLUE_States extends LinearOpMode {
             rotateRamp();
             encoderDrive(DRIVE_SPEED, 2, 2, 2, 2, 5); // Forward
             encoderDrive(DRIVE_SPEED, -24, 24, 24, -24, 5); // Left
-            encoderDrive(DRIVE_SPEED, -20, -20, -20, -20, 5); // Forward
+            encoderDrive(DRIVE_SPEED, -18, -18, -18, -18, 5); // back
 
             rotate(90, TURN_SPEED);
 
@@ -216,29 +216,46 @@ public class AUTONBLUE_States extends LinearOpMode {
 
             turnServo(1);
         } else {
-            encoderDrive(DRIVE_SPEED, -6, 6, 6, -6, 1);
-            sleep(4000);
+            encoderDrive(DRIVE_SPEED, -8, 8, 8, -8, 1); // Move to the left to check
+            sleep(1000);
             telemetryTfod();
-            telemetryTfod();
-            telemetryTfod();
+
             if (hasTargets) {
-                encoderDrive(DRIVE_SPEED, 6, -6, -6, 6, 1);
-                encoderDrive(DRIVE_SPEED, 14, 14, 14, 14, 1);
-                rotate(90, TURN_SPEED);
-                encoderDrive(DRIVE_SPEED, -5, -5, -5, -5, 1);
-                encoderDrive(DRIVE_SPEED, 5, -5, -5, 5, 1);
-                encoderDrive(DRIVE_SPEED, 8, 8, 8, 8, 1);
-                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5);
                 //TO THE LEFT
-            } else {
-                encoderDrive(DRIVE_SPEED, 6, -6, -6, 6, 1);
-                encoderDrive(DRIVE_SPEED, 14, 14, 14, 14, 1);
+
+                encoderDrive(DRIVE_SPEED, 8, -8, -8, 8, 1); // Move back
+                encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
                 rotate(-80, TURN_SPEED);
-                encoderDrive(DRIVE_SPEED, -7, -7, -7, -7, 1);
-                encoderDrive(DRIVE_SPEED, -7, 7, 7, -7, 1);
-                encoderDrive(DRIVE_SPEED, 10, 10, 10, 10, 1);
-                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5);
+                
+                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Backwards before rotate
+                rotateRamp();
+                
+
+                encoderDrive(DRIVE_SPEED, 20, -20, -20, 20, 5); // Move right
+
+                encoderDrive(DRIVE_SPEED, -20, -20, -20, -20, 5); // Backwards
+                rotate(180, TURN_SPEED);
+
+                encoderDrive(DRIVE_SPEED, 20, -20, -20, 20, 5); // Move back left
+
+                encoderDrive(DRIVE_SPEED, 10, 10, 10, 10, 5); // Backwards more (now forwards, towards the board)
+
+                turnServo(1);
+
+
+                encoderDrive(DRIVE_SPEED, -15, -15, -15, -15, 5); // Backwards more (now forwards, towards the board)
+
+                turnServo(-1);
+
+
+
+
+            } else {                
                 //TO THE RIGHT
+
+         
+                rotate(-80, TURN_SPEED);
+
             }
         }
 
@@ -356,13 +373,11 @@ public class AUTONBLUE_States extends LinearOpMode {
     } // end method telemetryTfod()
 
     // Method for driving with encoder
-    public void encoderDrive(double speed,
-        double leftInches, double rightInches, double backleftInches, double backrightInches,
-        double timeoutS) {
-        leftInches *= -1;
-        rightInches *= -1;
-        backleftInches *= -1;
-        backrightInches *= -1;
+    public void encoderDrive(double speed, double leftInches, double rightInches, double backleftInches, double backrightInches, double timeoutS){
+        //leftInches *= -1;
+        //rightInches *= -1;
+        //backleftInches *= -1;
+        //backrightInches *= -1;
         int newLeftTarget;
         int newRightTarget;
         int newBackLeftTarget;
@@ -498,7 +513,16 @@ public class AUTONBLUE_States extends LinearOpMode {
 
     public void turnServo(double servoPosition) {
         //autonServo.setPosition(Range.clip(servoPosition, MIN_POSITION, MAX_POSITION));
-        autonServo.setPosition(servoPosition);
+        if(servoPosition==1){
+            autonServo.setPower(-1);
+            sleep(2000);
+            autonServo.setPower(0);
+        }else{
+            autonServo.setPower(1);
+            sleep(3000);
+            autonServo.setPower(0);
+        }
+        
     }
 
     public void rotateRamp() {
