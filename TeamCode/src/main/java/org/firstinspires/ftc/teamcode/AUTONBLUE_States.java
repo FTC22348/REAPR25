@@ -72,6 +72,8 @@ public class AUTONBLUE_States extends LinearOpMode {
     CRServo autonServo;
     CRServo ramp;
     CRServo bucketArm;
+    CRServo intake;
+
 
 
 
@@ -138,6 +140,7 @@ public class AUTONBLUE_States extends LinearOpMode {
         autonServo = hardwareMap.crservo.get("autonDropServo");
         ramp = hardwareMap.crservo.get("ramp");
         bucketArm = hardwareMap.crservo.get("bucketArm");
+        intake = hardwareMap.crservo.get("intake");
 
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -223,6 +226,8 @@ public class AUTONBLUE_States extends LinearOpMode {
             if (hasTargets) {
                 //TO THE LEFT
 
+                /* 
+
                 encoderDrive(DRIVE_SPEED, 8, -8, -8, 8, 1); // Move back
                 encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
                 rotate(-80, TURN_SPEED);
@@ -231,30 +236,70 @@ public class AUTONBLUE_States extends LinearOpMode {
                 rotateRamp();
                 
 
-                encoderDrive(DRIVE_SPEED, 20, -20, -20, 20, 5); // Move right
+                encoderDrive(DRIVE_SPEED, 17, -17, -17, 17, 5); // Move right
 
                 encoderDrive(DRIVE_SPEED, -20, -20, -20, -20, 5); // Backwards
                 rotate(180, TURN_SPEED);
 
-                encoderDrive(DRIVE_SPEED, 20, -20, -20, 20, 5); // Move back left
+                encoderDrive(DRIVE_SPEED, 16, -16, -16, 16, 5); // Move back left
 
                 encoderDrive(DRIVE_SPEED, 10, 10, 10, 10, 5); // Backwards more (now forwards, towards the board)
 
-                turnServo(1);
+                turnServo(1); // Down
+
+                sleep(1000);
+
+                turnServo(-1); // Up
+
+                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Forwards, away from board
+                */
 
 
-                encoderDrive(DRIVE_SPEED, -15, -15, -15, -15, 5); // Backwards more (now forwards, towards the board)
+                encoderDrive(DRIVE_SPEED, -2, 2, 2, -2, 5); // Move left
 
-                turnServo(-1);
+                encoderDrive(DRIVE_SPEED, 27, 27, 27, 27, 5);
+                rotateRamp();
+                encoderDrive(DRIVE_SPEED, -17, 17, 17, -17, 5); // Move left
+                rotate(90, TURN_SPEED);
+                encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 5);
+                encoderDrive(DRIVE_SPEED, -5, 5, 5, -5, 5); // Move left
+
+
+
+
+
+
 
 
 
 
             } else {                
                 //TO THE RIGHT
-
+                
+                encoderDrive(DRIVE_SPEED, 8, -8, -8, 8, 1); // Move back
+                encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
+                rotate(90, TURN_SPEED);
          
-                rotate(-80, TURN_SPEED);
+                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Backwards before rotate
+                rotateRamp();
+
+                encoderDrive(DRIVE_SPEED, 35.5, 35.5, 35.5, 35.5, 5);
+
+                encoderDrive(DRIVE_SPEED, 8, -8, -8, 8, 1); // Move back
+
+
+
+                turnServo(1); // Down
+
+                sleep(1000);
+
+                turnServo(-1); // 
+                
+                encoderDrive(DRIVE_SPEED, 16, -16, -16, 16, 2); // Move back
+
+
+
+                
 
             }
         }
@@ -497,7 +542,6 @@ public class AUTONBLUE_States extends LinearOpMode {
         motorFrontRight.setPower(0);
 
         // sleep for a bit to make sure the robot doesn't over shoot
-        sleep(1000);
 
         resetAngle();
     }
@@ -514,12 +558,12 @@ public class AUTONBLUE_States extends LinearOpMode {
     public void turnServo(double servoPosition) {
         //autonServo.setPosition(Range.clip(servoPosition, MIN_POSITION, MAX_POSITION));
         if(servoPosition==1){
-            autonServo.setPower(-1);
+            autonServo.setPower(-0.7);
             sleep(2000);
             autonServo.setPower(0);
         }else{
             autonServo.setPower(1);
-            sleep(3000);
+            sleep(2000);
             autonServo.setPower(0);
         }
         
@@ -533,8 +577,11 @@ public class AUTONBLUE_States extends LinearOpMode {
 
         // Move ramp
         ramp.setPower(-1);
-        sleep(7000);
+        intake.setPower(1);
+        sleep(4000);
         ramp.setPower(0);
+        intake.setPower(0);
+
 
 
         //Move arm down
