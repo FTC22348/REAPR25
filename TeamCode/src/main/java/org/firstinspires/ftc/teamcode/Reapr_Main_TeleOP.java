@@ -186,11 +186,11 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             //telemetry.addData("Drone launcher", "%.2f", launcherPosition); //displays the values on the driver hub
             //telemetry.update();
             if (gamepad1.b) {
-                launcher.setPower(-1);
+                launcher.setPosition(-1);
                 //telemetry.update();
             }
             else if (gamepad1.x){
-                launcher.setPower(1);
+                launcher.setPosition(1);
                 //telemetry.update();
             }
 
