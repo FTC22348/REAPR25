@@ -97,8 +97,6 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
 
         int currentPosition = 0;
 
-        boolean keepRolling = false;
-
         while (opModeIsActive()) {
             //! Control Speed
             if(isSlowMode){
@@ -155,17 +153,8 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             muscle.setPower(0);
 
 
-            if(gamepad1.a){
-                if(!keepRolling){
-                    keepRolling = true;
-                }else{
-                    keepRolling = false;
-                }
-                sleep(100);
-            }
-
             // Spinner (intake) motor
-            if (keepRolling){ // Move down
+            if (gamepad1.a){ // Move down
                 intake.setPower(1);
                 ramp.setPower(-1);
             }else if (gamepad1.y){ // Move up
@@ -186,11 +175,11 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             //telemetry.addData("Drone launcher", "%.2f", launcherPosition); //displays the values on the driver hub
             //telemetry.update();
             if (gamepad1.b) {
-                launcher.setPosition(-1);
+                launcher.setPower(-1);
                 //telemetry.update();
             }
             else if (gamepad1.x){
-                launcher.setPosition(1);
+                launcher.setPower(1);
                 //telemetry.update();
             }
 
