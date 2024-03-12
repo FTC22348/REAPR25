@@ -60,8 +60,8 @@ import java.util.List;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@Autonomous(name = "BLUE AUTON STATES", group = "Concept")
-public class AUTONBLUE_States extends LinearOpMode {
+@Autonomous(name = "BLUE AUTON STATES FAR", group = "Concept")
+public class AUTONBLUE_far_states extends LinearOpMode {
     private boolean hasTargets;
     private int generatedScenario;
 
@@ -208,7 +208,6 @@ public class AUTONBLUE_States extends LinearOpMode {
         if (hasTargets) {
             // MIDDLE TARGET
 
-            //! This is working, do not touch
 
             encoderDrive(0.4, 34.5, 34.5, 34.5, 34.5, 5); // Forward
             rotateRamp();
@@ -230,11 +229,43 @@ public class AUTONBLUE_States extends LinearOpMode {
             encoderDrive(DRIVE_SPEED, -20, 20, 20, -20, 5); // Move left and park
 
         } else {
-            encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Move to the left to check
+            encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Move to the right to check
             sleep(1000);
             telemetryTfod();
 
             if (hasTargets) {
+                //TO THE RIGHT
+
+                
+                encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Move back
+                encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
+                rotate(90, TURN_SPEED);
+         
+                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Backwards before rotate
+                rotateRamp();
+
+                encoderDrive(DRIVE_SPEED, 2, -2, -2, 2, 2); // Move to the right a little
+
+
+                bucketArm.setPower(-0.3);
+                encoderDrive(DRIVE_SPEED, 75, 75, 75, 75, 10); // Drive forward
+                bucketArm.setPower(0);
+                
+
+                encoderDrive(DRIVE_SPEED, 9, -9, -9, 9, 1); // Move back
+
+
+
+                turnServo(1); // Down
+
+                sleep(1000);
+
+
+                turnServo(-1); // 
+                
+                encoderDrive(DRIVE_SPEED, -23, 23, 23, -23, 5); // Park
+
+            } else {                
                 //TO THE LEFT
 
                 /* 
@@ -284,35 +315,7 @@ public class AUTONBLUE_States extends LinearOpMode {
                 
                 encoderDrive(DRIVE_SPEED, -16, 16, 16, -16, 5); // Move left and park
 
-            } else {                
-                //TO THE RIGHT
-
-                //! This is working, do not touch
                 
-                encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Move back
-                encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
-                rotate(90, TURN_SPEED);
-         
-                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Backwards before rotate
-                rotateRamp();
-
-                encoderDrive(DRIVE_SPEED, 35.5, 35.5, 35.5, 35.5, 5);
-
-                encoderDrive(DRIVE_SPEED, 9, -9, -9, 9, 1); // Move back
-
-
-
-                turnServo(1); // Down
-
-                sleep(1000);
-
-
-                turnServo(-1); // 
-                
-                encoderDrive(DRIVE_SPEED, -23, 23, 23, -23, 5); // Park
-
-
-
                 
 
             }
@@ -591,12 +594,14 @@ public class AUTONBLUE_States extends LinearOpMode {
 
 
         //Move arm down
-        /*
+        /* 
         bucketArm.setPower(-0.5);
         sleep(1000);
         bucketArm.setPower(0);
         */
+        
     }
+
 
     //
 
