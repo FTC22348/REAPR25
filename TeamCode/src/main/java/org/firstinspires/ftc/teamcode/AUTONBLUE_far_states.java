@@ -211,11 +211,13 @@ public class AUTONBLUE_far_states extends LinearOpMode {
 
             encoderDrive(0.4, 34.5, 34.5, 34.5, 34.5, 5); // Forward
             rotateRamp();
-            encoderDrive(DRIVE_SPEED, 2, 2, 2, 2, 5); // Forward
-            encoderDrive(DRIVE_SPEED, -24, 24, 24, -24, 5); // Left
-            encoderDrive(DRIVE_SPEED, -18, -18, -18, -18, 5); // back
+            encoderDrive(DRIVE_SPEED, 4, 4, 4, 4, 5); // Forward
 
             rotate(90, TURN_SPEED);
+
+            encoderDrive(DRIVE_SPEED, 70, 70, 70, 70, 5); // forward
+            encoderDrive(DRIVE_SPEED, -18, 18, 18, -18, 5); // left
+
 
             encoderDrive(DRIVE_SPEED, 12.5, 12.5, 12.5, 12.5, 5); // Forward
 
@@ -236,6 +238,7 @@ public class AUTONBLUE_far_states extends LinearOpMode {
             if (hasTargets) {
                 //TO THE RIGHT
 
+                //! Do not touch
                 /* 
                 encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Move back
                 encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
@@ -274,16 +277,19 @@ public class AUTONBLUE_far_states extends LinearOpMode {
 
                 rotateRamp();
 
-                encoderDrive(DRIVE_SPEED, 0.5, 0.5, 0.5, 0.5, 10); // Drive forward
+                encoderDrive(DRIVE_SPEED, 3, 3, 3, 3, 10); // Drive forward
 
                 encoderDrive(DRIVE_SPEED, 25, -25, -25, 25, 4); // Move to the right
 
 
                 bucketArm.setPower(-0.3);
-                encoderDrive(DRIVE_SPEED, 73, 73, 73, 73, 10); // Drive forward
+                encoderDrive(DRIVE_SPEED, 69.5, 69.5, 69.5, 69.5, 10); // Drive forward
                 bucketArm.setPower(0);
 
                 encoderDrive(DRIVE_SPEED, -15, 15, 15, -15, 4); // Move back to the left
+
+                encoderDrive(DRIVE_SPEED, 1, 1, 1, 1, 10); // Drive forward
+
 
 
                 //encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Move to the right to drop
