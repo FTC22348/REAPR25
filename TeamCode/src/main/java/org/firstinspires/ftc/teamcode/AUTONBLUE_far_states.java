@@ -236,7 +236,7 @@ public class AUTONBLUE_far_states extends LinearOpMode {
             if (hasTargets) {
                 //TO THE RIGHT
 
-                
+                /* 
                 encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Move back
                 encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
                 rotate(90, TURN_SPEED);
@@ -264,6 +264,41 @@ public class AUTONBLUE_far_states extends LinearOpMode {
                 turnServo(-1); // 
                 
                 encoderDrive(DRIVE_SPEED, -23, 23, 23, -23, 5); // Park
+                */
+
+                rotate(86, TURN_SPEED);
+
+                encoderDrive(DRIVE_SPEED, 20, -20, -20, 20, 4); // Move to the right
+
+                encoderDrive(DRIVE_SPEED, 4, 4, 4, 4, 5);
+
+                rotateRamp();
+
+                encoderDrive(DRIVE_SPEED, 0.5, 0.5, 0.5, 0.5, 10); // Drive forward
+
+                encoderDrive(DRIVE_SPEED, 25, -25, -25, 25, 4); // Move to the right
+
+
+                bucketArm.setPower(-0.3);
+                encoderDrive(DRIVE_SPEED, 73, 73, 73, 73, 10); // Drive forward
+                bucketArm.setPower(0);
+
+                encoderDrive(DRIVE_SPEED, -15, 15, 15, -15, 4); // Move back to the left
+
+
+                //encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Move to the right to drop
+
+
+                turnServo(1); // Down
+
+                sleep(500);
+
+                turnServo(-1); // 
+                
+
+
+
+
 
             } else {                
                 //TO THE LEFT
@@ -358,7 +393,7 @@ public class AUTONBLUE_far_states extends LinearOpMode {
             //.setIsModelTensorFlow2(true)
             //.setIsModelQuantized(true)
             //.setModelInputSize(300)
-            .setModelAspectRatio(16.0 / 9.0)
+            .setModelAspectRatio(16.0 / 10.0)
 
             .build();
 
