@@ -239,85 +239,30 @@
  
              if (hasTargets) {
  
-                 //TO THE RIGHT
+                 //TO THE RIGHT (PROP)
  
                  encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
-                 rotate(-80, TURN_SPEED);
- 
+                 rotate(-80, TURN_SPEED); // Rotate 80 degrees towards board (camera)
                  encoderDrive(DRIVE_SPEED, 8, 8, 8, 8, 5); // Forwads before rotate
                  rotateRamp();
- 
-                 encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 5);
- 
-                 encoderDrive(DRIVE_SPEED, 9, -9, -9, 9, 1); // Move back
- 
- 
- 
-                 turnServo(1); // Down
+                 encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 5); // Robot is positioned at board
+
+                 encoderDrive(DRIVE_SPEED, 9, -9, -9, 9, 1); // Strafe Right
+                 turnServo(1); // Rotates "Jesus" up to drop yellow pixel on backdrop
  
                  sleep(1000);
+                 turnServo(-1); // Rotates "Jesus" back to original position
  
- 
-                 turnServo(-1); // 
- 
-                 encoderDrive(DRIVE_SPEED, 5, -5, -5, 5, 5); // Park
+                 encoderDrive(DRIVE_SPEED, 5, -5, -5, 5, 5); // Park (Right Corner)
              } else {
                  //TO THE LEFT
  
-                 encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Move back left
- 
- 
-                 /* 
-  
-                  encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 1); // Move back
-                  encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
-                  rotate(-80, TURN_SPEED);
-                  
-                  encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Backwards before rotate
-                  rotateRamp();
-                  
-  
-                  encoderDrive(DRIVE_SPEED, 17, -17, -17, 17, 5); // Move right
-  
-                  encoderDrive(DRIVE_SPEED, -20, -20, -20, -20, 5); // Backwards
-                  rotate(180, TURN_SPEED);
-  
-                  encoderDrive(DRIVE_SPEED, 16, -16, -16, 16, 5); // Move back left
-  
-                  encoderDrive(DRIVE_SPEED, 10, 10, 10, 10, 5); // Backwards more (now forwards, towards the board)
-  
-                  turnServo(1); // Down
-  
-                  sleep(1000);
-  
-                  turnServo(-1); // Up
-  
-                  encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Forwards, away from board
-                  */
- 
- 
-                 //encoderDrive(DRIVE_SPEED, -2, 2, 2, -2, 5); // Move left
- 
- 
-                 encoderDrive(DRIVE_SPEED, 27, 27, 27, 27, 5);
-                 rotateRamp();
-                 encoderDrive(DRIVE_SPEED, 17, -17, -17, 17, 5); // Move right
-                 rotate(-84, TURN_SPEED);
-                 encoderDrive(DRIVE_SPEED, 10, 10, 10, 10, 5); // Move towards board
-                 encoderDrive(DRIVE_SPEED, -16, 16, 16, -16, 5); // Move left
- 
-                 turnServo(1);
-                 encoderDrive(DRIVE_SPEED, -2, -2, -2, -2, 5);
- 
-                 turnServo(-1);
- 
-                 encoderDrive(DRIVE_SPEED, 16, -16, -16, 16, 5); // Move right and park
- 
- 
- 
- 
- 
- 
+                 rotate(-80, TURN_SPEED); // Turn camera facing board
+                 encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Strafe to left before backing
+                 encoderDrive(DRIVE_SPEED, -10, -10, -10, -10, 2); // Back Up
+                 rotateRamp(); // Arm up and ramp moves 
+                 // Resume here 3/13
+
              }
          }
  
