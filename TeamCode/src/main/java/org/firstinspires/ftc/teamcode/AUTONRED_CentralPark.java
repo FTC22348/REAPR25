@@ -61,8 +61,8 @@
   * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
   * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
   */
- @Autonomous(name = "RED AUTON STATES (PARK CENTER)", group = "Concept")
- public class AUTONRED_CentralPark extends LinearOpMode {
+  @Autonomous(name = "RED AUTON STATES (PARK CENTER)", group = "Concept")
+  public class AUTONRED_CentralPark extends LinearOpMode {
      private boolean hasTargets;
      private int generatedScenario;
  
@@ -223,12 +223,10 @@
  
              turnServo(1);
  
-             encoderDrive(DRIVE_SPEED, -1, -1, -1, -1, 5); // Forward
- 
-             turnServo(-1);
- 
+             encoderDrive(DRIVE_SPEED, -2, -2, -2, -2, 5); // Back
  
              encoderDrive(DRIVE_SPEED, -20, 20, 20, -20, 5); // Strafe left and park in center
+             turnServo(-1); // Rotates "Jesus" back to original position
  
          } else {
  
@@ -245,33 +243,34 @@
                  rotate(-80, TURN_SPEED); // Rotate 80 degrees towards board (camera)
                  encoderDrive(DRIVE_SPEED, 8, 8, 8, 8, 5); // Forwads before rotate
                  rotateRamp();
-                 encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 5); // Robot is positioned at board
+                 encoderDrive(DRIVE_SPEED, 16, 16, 16, 16, 5); // Robot is positioned at board
 
-                 encoderDrive(DRIVE_SPEED, 5, -5, -5, 5, 1); // Strafe Right
+                 encoderDrive(DRIVE_SPEED, 4, -4, -4, 4, 1); // Strafe Right
                  turnServo(1); // Rotates "Jesus" up to drop yellow pixel on backdrop
  
                  sleep(1000);
-                 turnServo(-1); // Rotates "Jesus" back to original position
  
+                 encoderDrive(DRIVE_SPEED, -2, -2, -2, -2, 5); // Back Up
                  encoderDrive(DRIVE_SPEED, -25, 25, 25, -25, 12); // Strafe Left + Park (Center)
+                 turnServo(-1); // Rotates "Jesus" back to original position
              } else {
                  //TO THE LEFT
  
                  rotate(-78, TURN_SPEED); // Turn camera facing board
                  encoderDrive(DRIVE_SPEED, -18, 18, 18, -18, 2); // Strafe to left before backing
-                 encoderDrive(DRIVE_SPEED, -12, -12, -12, -12, 2); // Back Up
+                 encoderDrive(DRIVE_SPEED, -11, -11, -11, -11, 2); // Back Up
                  rotateRamp(); // Arm up and ramp moves 
                  encoderDrive(DRIVE_SPEED, 50, 50, 50, 50, 2); // Move Forward
                 //  sleep(1000);
-                 encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Strafe to left before rotating "Jesus"
+                 encoderDrive(DRIVE_SPEED, -8, 8, 8, -8, 2); // Strafe to left before rotating "Jesus"
                  encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 2); // Move Forward
                  turnServo(1); // Rotates "Jesus" up to drop yellow pixel on backdrop
  
                  sleep(1000);
-                 turnServo(-1); // Rotates "Jesus" back to original position
 
-                 encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2); // Back Up
+                 encoderDrive(DRIVE_SPEED, -2, -2, -2, -2, 2); // Back Up
                  encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 5); // Strafe Left + Park (Center)
+                 turnServo(-1); // Rotates "Jesus" back to original position
 
              }
          }
@@ -542,7 +541,7 @@
          // Move ramp
          ramp.setPower(-1);
          intake.setPower(1);
-         sleep(4000);
+         sleep(3000);
          ramp.setPower(0);
          intake.setPower(0);
  
@@ -559,4 +558,4 @@
      //
  
  
- } // End of the AUTONRED_States class
+ } // End of the AUTONRED_CentralPark class
