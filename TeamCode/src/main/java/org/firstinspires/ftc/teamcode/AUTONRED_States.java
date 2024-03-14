@@ -257,11 +257,17 @@
              } else {
                  //TO THE LEFT
  
-                 rotate(-80, TURN_SPEED); // Turn camera facing board
-                 encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Strafe to left before backing
-                 encoderDrive(DRIVE_SPEED, -10, -10, -10, -10, 2); // Back Up
+                 rotate(-78, TURN_SPEED); // Turn camera facing board
+                 encoderDrive(DRIVE_SPEED, -18, 18, 18, -18, 2); // Strafe to left before backing
+                 encoderDrive(DRIVE_SPEED, -12, -12, -12, -12, 2); // Back Up
                  rotateRamp(); // Arm up and ramp moves 
-                 // Resume here 3/13
+                 encoderDrive(DRIVE_SPEED, 50, 50, 50, 50, 2); // Move Forward
+                //  sleep(1000);
+                 encoderDrive(DRIVE_SPEED, -12, 12, 12, -12, 2); // Strafe to left before rotating "Jesus"
+                 turnServo(1); // Rotates "Jesus" up to drop yellow pixel on backdrop
+ 
+                 sleep(1000);
+                 turnServo(-1); // Rotates "Jesus" back to original position
 
              }
          }
@@ -512,7 +518,7 @@
      public void turnServo(double servoPosition) {
          //autonServo.setPosition(Range.clip(servoPosition, MIN_POSITION, MAX_POSITION));
          if (servoPosition == 1) {
-             autonServo.setPower(-0.4);
+             autonServo.setPower(-0.2);
              sleep(2500);
              autonServo.setPower(0);
          } else {
