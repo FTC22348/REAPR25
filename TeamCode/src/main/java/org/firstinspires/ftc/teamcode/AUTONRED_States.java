@@ -247,13 +247,13 @@
                  rotateRamp();
                  encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 5); // Robot is positioned at board
 
-                 encoderDrive(DRIVE_SPEED, 9, -9, -9, 9, 1); // Strafe Right
+                 encoderDrive(DRIVE_SPEED, 5, -5, -5, 5, 1); // Strafe Right
                  turnServo(1); // Rotates "Jesus" up to drop yellow pixel on backdrop
  
                  sleep(1000);
                  turnServo(-1); // Rotates "Jesus" back to original position
  
-                 encoderDrive(DRIVE_SPEED, 5, -5, -5, 5, 5); // Park (Right Corner)
+                 encoderDrive(DRIVE_SPEED, 12, -12, -12, 12, 12); // Park (Right Corner)
              } else {
                  //TO THE LEFT
  
@@ -263,11 +263,15 @@
                  rotateRamp(); // Arm up and ramp moves 
                  encoderDrive(DRIVE_SPEED, 50, 50, 50, 50, 2); // Move Forward
                 //  sleep(1000);
-                 encoderDrive(DRIVE_SPEED, -12, 12, 12, -12, 2); // Strafe to left before rotating "Jesus"
+                 encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Strafe to left before rotating "Jesus"
+                 encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 2); // Move Forward
                  turnServo(1); // Rotates "Jesus" up to drop yellow pixel on backdrop
  
                  sleep(1000);
                  turnServo(-1); // Rotates "Jesus" back to original position
+
+                 encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2); // Back Up
+                 encoderDrive(DRIVE_SPEED, 30, -30, -30, 30, 5); // Park (Right Corner)
 
              }
          }
