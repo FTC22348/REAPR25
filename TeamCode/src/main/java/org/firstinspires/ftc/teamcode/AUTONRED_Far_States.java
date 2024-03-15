@@ -212,28 +212,22 @@
              //! This is working, do not touch
  
              encoderDrive(0.4, 34.5, 34.5, 34.5, 34.5, 5); // Forward
+             bucketArm(1.0); // Move Arm Up
              rotateRamp();
 
+             encoderDrive(DRIVE_SPEED, 3, 3, 3, 3, 5); // Forward
+             bucketArm(-1.0); // Move Arm Down
+             rotate(-84, TURN_SPEED);
 
-            //  encoderDrive(DRIVE_SPEED, 2, 2, 2, 2, 5); // Forward
-            //  encoderDrive(DRIVE_SPEED, 24, -24, -24, 24, 5); // Right
-            //  encoderDrive(DRIVE_SPEED, -18, -18, -18, -18, 5); // back
  
-            //  rotate(-84, TURN_SPEED);
- 
-            //  encoderDrive(DRIVE_SPEED, 12, 12, 12, 12, 5); // Forward
+             encoderDrive(DRIVE_SPEED, 80, 80, 80, 80, 5); // Forward
  
             //  turnServo(1);
  
             //  encoderDrive(DRIVE_SPEED, -1, -1, -1, -1, 5); // Forward
  
             //  turnServo(-1);
- 
- 
-            //  encoderDrive(DRIVE_SPEED, 20, -20, -20, 20, 5); // Move right and park
 
-
- 
          } else {
 
             // CODE FOR LEFT HAND SIDE PROP IN FAR POSITION
@@ -251,11 +245,12 @@
                  rotate(-84, TURN_SPEED);
 
 
-                //encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
-                
-                //  encoderDrive(DRIVE_SPEED, 8, 8, 8, 8, 5); // Forwads before rotate
-                //  rotateRamp();
-                //  encoderDrive(DRIVE_SPEED, 15, 15, 15, 15, 5); // Robot is positioned at board
+                encoderDrive(DRIVE_SPEED, -20, 20, 20, -20, 1); // Strafe Left
+                bucketArm(1.0); // Move Arm Up
+                encoderDrive(DRIVE_SPEED, -5, -5, -5, -5, 1); // Back Up
+                 rotateRamp();
+                 encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 5); // Move Forward
+                 bucketArm(-1.0); // Move Arm Down
 
                 //  encoderDrive(DRIVE_SPEED, 5, -5, -5, 5, 1); // Strafe Right
                 //  turnServo(1); // Rotates "Jesus" up to drop yellow pixel on backdrop
@@ -268,7 +263,9 @@
 
              } else {
                  //TO THE RIGHT PROP NEAR THE TRUSS
-                 rotate(-84, TURN_SPEED);
+                 rotate(80, TURN_SPEED); // Camera facing away from back drop
+                 encoderDrive(DRIVE_SPEED, 18, -18, -18, 18, 2); // Strafe to right
+                 bucketArm(1.0);
 
 
  
@@ -549,26 +546,20 @@
      }
  
      public void rotateRamp() {
-         // Move arm up
-         bucketArm.setPower(1);
-         sleep(1000);
-         bucketArm.setPower(0);
- 
          // Move ramp
          ramp.setPower(-1);
          intake.setPower(1);
          sleep(4000);
          ramp.setPower(0);
          intake.setPower(0);
- 
- 
- 
-         //Move arm down
-         /*
-         bucketArm.setPower(-0.5);
-         sleep(1000);
-         bucketArm.setPower(0);
-         */
+     }
+
+     public void bucketArm(double power){
+        // Postive Power: Bucket Moves Up
+        // Negative Power: Bucket Moves Down
+        bucketArm.setPower(power);
+        sleep(1000);
+        bucketArm.setPower(0);
      }
  
      //
