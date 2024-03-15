@@ -90,7 +90,7 @@
      static final double WHEEL_DIAMETER_INCHES = 3.78;
      static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
          (WHEEL_DIAMETER_INCHES * 3.14159);
-     static final double DRIVE_SPEED = 0.6;
+     static final double DRIVE_SPEED = 0.65;
      static final double TURN_SPEED = 0.4;
  
      private static final boolean USE_WEBCAM = true; // true for webcam, false for phone camera
@@ -213,26 +213,27 @@
 
             
              rotate(182, TURN_SPEED);
-             sleep(1000);
+             sleep(800);
              encoderDrive(DRIVE_SPEED, -25, -25, -25, -25, 5); // Backward
-             bucketArm(1.0); // Move Arm Up
-             sleep(1000);
-             encoderDrive(DRIVE_SPEED, 6, 6, 6, 6, 5); // Forward
+             bucketArm(1.0, 1000); // Move Arm Up
+             sleep(200);
+             encoderDrive(DRIVE_SPEED, 5.5, 5.5, 5.5, 5.5, 5); // Forward
              rotateRamp();
 
-             encoderDrive(DRIVE_SPEED, 17, 17, 17, 17, 5); // Forward
-             bucketArm(-1.0); // Move Arm Down             
+             encoderDrive(DRIVE_SPEED, 19.5, 19.5, 19.5, 19.5, 5); // Forward
+             bucketArm(-1.0, 600); // Move Arm Down             
              
-             rotate(86, TURN_SPEED);
-             sleep(1000);
+             rotate(84, TURN_SPEED);
+             sleep(800);
              encoderDrive(DRIVE_SPEED, 68, 68, 68, 68, 5); // Forward
-             sleep(1000);
-             encoderDrive(DRIVE_SPEED, -20, 20, 20, -20, 2); // Strafe left
+             sleep(800);
+             encoderDrive(DRIVE_SPEED, -19.5, 19.5, 19.5, -19.5, 2); // Strafe left
              encoderDrive(DRIVE_SPEED, 4, 4, 4, 4, 2); // Forward
-             sleep(1000);
+             sleep(200);
 
              turnServo(1);
-             encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Forward
+             sleep(500);
+             encoderDrive(DRIVE_SPEED, -2.75, -2.75, -2.75, -2.75, 5); // Back Up
              turnServo(-1);
 
          } else {
@@ -253,11 +254,11 @@
 
 
                 encoderDrive(DRIVE_SPEED, -20, 20, 20, -20, 1); // Strafe Left
-                bucketArm(1.0); // Move Arm Up
+                bucketArm(1.0, 1000); // Move Arm Up
                 encoderDrive(DRIVE_SPEED, -5, -5, -5, -5, 1); // Back Up
                  rotateRamp();
                  encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 5); // Move Forward
-                 bucketArm(-1.0); // Move Arm Down
+                 bucketArm(-1.0, 600); // Move Arm Down
 
                  encoderDrive(DRIVE_SPEED, 5, -5, -5, 5, 1); // Strafe Right
                 //  turnServo(1); // Rotates "Jesus" up to drop yellow pixel on backdrop
@@ -270,9 +271,9 @@
 
              } else {
                  //TO THE RIGHT PROP NEAR THE TRUSS
-                 rotate(80, TURN_SPEED); // Camera facing away from back drop
-                 encoderDrive(DRIVE_SPEED, 18, -18, -18, 18, 2); // Strafe to right
-                 bucketArm(1.0);
+                //  rotate(80, TURN_SPEED); // Camera facing away from back drop
+                //  encoderDrive(DRIVE_SPEED, 18, -18, -18, 18, 2); // Strafe to right
+                //  bucketArm(1.0);
 
 
  
@@ -556,16 +557,16 @@
          // Move ramp
          ramp.setPower(-1);
          intake.setPower(1);
-         sleep(4000);
+         sleep(2500);
          ramp.setPower(0);
          intake.setPower(0);
      }
 
-     public void bucketArm(double power){
+     public void bucketArm(double power, int sleepTime){
         // Postive Power: Bucket Moves Up
         // Negative Power: Bucket Moves Down
         bucketArm.setPower(power);
-        sleep(1000);
+        sleep(sleepTime);
         bucketArm.setPower(0);
      }
  
