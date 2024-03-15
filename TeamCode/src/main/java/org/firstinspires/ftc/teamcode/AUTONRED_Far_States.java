@@ -210,23 +210,30 @@
              // MIDDLE TARGET
 
              //! This is working, do not touch
- 
-             encoderDrive(0.4, 34.5, 34.5, 34.5, 34.5, 5); // Forward
+
+            
+             rotate(182, TURN_SPEED);
+             sleep(1000);
+             encoderDrive(DRIVE_SPEED, -25, -25, -25, -25, 5); // Backward
              bucketArm(1.0); // Move Arm Up
+             sleep(1000);
+             encoderDrive(DRIVE_SPEED, 6, 6, 6, 6, 5); // Forward
              rotateRamp();
 
-             encoderDrive(DRIVE_SPEED, 3, 3, 3, 3, 5); // Forward
-             bucketArm(-1.0); // Move Arm Down
-             rotate(-84, TURN_SPEED);
+             encoderDrive(DRIVE_SPEED, 17, 17, 17, 17, 5); // Forward
+             bucketArm(-1.0); // Move Arm Down             
+             
+             rotate(86, TURN_SPEED);
+             sleep(1000);
+             encoderDrive(DRIVE_SPEED, 68, 68, 68, 68, 5); // Forward
+             sleep(1000);
+             encoderDrive(DRIVE_SPEED, -20, 20, 20, -20, 2); // Strafe left
+             encoderDrive(DRIVE_SPEED, 4, 4, 4, 4, 2); // Forward
+             sleep(1000);
 
- 
-             encoderDrive(DRIVE_SPEED, 80, 80, 80, 80, 5); // Forward
- 
-            //  turnServo(1);
- 
-            //  encoderDrive(DRIVE_SPEED, -1, -1, -1, -1, 5); // Forward
- 
-            //  turnServo(-1);
+             turnServo(1);
+             encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Forward
+             turnServo(-1);
 
          } else {
 
@@ -252,7 +259,7 @@
                  encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 5); // Move Forward
                  bucketArm(-1.0); // Move Arm Down
 
-                //  encoderDrive(DRIVE_SPEED, 5, -5, -5, 5, 1); // Strafe Right
+                 encoderDrive(DRIVE_SPEED, 5, -5, -5, 5, 1); // Strafe Right
                 //  turnServo(1); // Rotates "Jesus" up to drop yellow pixel on backdrop
  
                 //  sleep(1000);
