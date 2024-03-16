@@ -66,6 +66,8 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         // DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0 (intake is a servo now)
         CRServo intake = hardwareMap.crservo.get("intake");
         CRServo ramp = hardwareMap.crservo.get("ramp");
+        CRServo autonServo = hardwareMap.crservo.get("autonDropServo");
+
         Servo hinge = hardwareMap.servo.get("hinge");
 
         //DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
@@ -105,7 +107,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 dividePower=1.0;
             }
 
-            if(gamepad1.left_stick_button){
+            if(gamepad1.left_stick_button || gamepad1.dpad_right){
                 if(isSlowMode){
                     isSlowMode=false;
                     sleep(500);
@@ -194,6 +196,14 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 bucketArm.setPower(0);
             }
 
+            // Jesus
+            if (gamepad1.dpad_up){
+                autonServo.setPower(1);
+            }
+            if (gamepad1.dpad_down){
+                autonServo.setPower(-1);
+            }
+            autonServo.setPower(0);
 
             // Bucket
             if(gamepad2.b){
