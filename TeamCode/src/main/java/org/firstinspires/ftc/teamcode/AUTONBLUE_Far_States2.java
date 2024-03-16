@@ -216,14 +216,14 @@
              sleep(800);
              encoderDrive(DRIVE_SPEED, -25, -25, -25, -25, 5); // Backward
              bucketArm(1.0, 1000); // Move Arm Up
-             sleep(200);
+             sleep(800);
              encoderDrive(DRIVE_SPEED, 5.5, 5.5, 5.5, 5.5, 5); // Forward
              rotateRamp();
 
              encoderDrive(DRIVE_SPEED, 19.5, 19.5, 19.5, 19.5, 5); // Forward
              bucketArm(-1.0, 600); // Move Arm Down             
              
-             rotate(-84, TURN_SPEED);
+             rotate(-80, TURN_SPEED);
              sleep(800);
              encoderDrive(DRIVE_SPEED, 68, 68, 68, 68, 5); // Forward
              sleep(800);
@@ -252,7 +252,7 @@
                 //  encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Come back to original position             
                 encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5); // Forward
                 sleep(800);
-                rotate(78, TURN_SPEED); // Camera Towards Board
+                rotate(83, TURN_SPEED); // Camera Towards Board
 
                 
                 sleep(300);
@@ -260,7 +260,7 @@
                 encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 2); // Move Forward
                 rotateRamp();
 
-                 encoderDrive(DRIVE_SPEED, -27, 27, 27, -27, 5); // Strafe Left
+                 encoderDrive(DRIVE_SPEED, -27.5, 27.5, 27.5, -27.5, 5); // Strafe Left
                  sleep(200);
                  bucketArm(-1.0, 600); // Move Arm Down
                  sleep(200);
