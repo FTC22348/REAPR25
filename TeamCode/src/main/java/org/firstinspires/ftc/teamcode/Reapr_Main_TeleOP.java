@@ -66,12 +66,14 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
         // DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0 (intake is a servo now)
         CRServo intake = hardwareMap.crservo.get("intake");
         CRServo ramp = hardwareMap.crservo.get("ramp");
+        CRServo autonServo = hardwareMap.crservo.get("autonDropServo");
+
         Servo hinge = hardwareMap.servo.get("hinge");
 
         //DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
 
         // Airplane launcher setup
-        Servo launcher = hardwareMap.servo.get("launcher");
+        CRServo launcher = hardwareMap.crservo.get("launcher");
         CRServo bucketArm = hardwareMap.crservo.get("bucketArm");
         CRServo bucket = hardwareMap.crservo.get("bucket");
 
@@ -97,6 +99,8 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
 
         int currentPosition = 0;
 
+        boolean keepMoving = false;
+
         while (opModeIsActive()) {
             //! Control Speed
             if(isSlowMode){
@@ -105,7 +109,7 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 dividePower=1.0;
             }
 
-            if(gamepad1.left_stick_button){
+            if(gamepad1.left_stick_button || gamepad1.dpad_right){
                 if(isSlowMode){
                     isSlowMode=false;
                     sleep(500);
@@ -138,26 +142,34 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
             //! Misc motor controls
             // Worm Gear motor Controls
             // For hanging arm
-            if (gamepad2.y){ // Move up
+            if (gamepad2.a){ // Move down
                 wormGear.setPower(1);
                 muscle.setPower(1);
-            }
-            wormGear.setPower(0);
-            muscle.setPower(0);
-
-            if (gamepad2.a){ // Move down
+            }else if (gamepad2.y){ // Move up
                 wormGear.setPower(-1);
                 muscle.setPower(-1);
+            }else{
+                wormGear.setPower(0);
+                muscle.setPower(0);
             }
-            wormGear.setPower(0);
-            muscle.setPower(0);
+
 
 
             // Spinner (intake) motor
-            if (gamepad1.a){ // Move down
+
+            if(keepMoving && gamepad1.a){
+                keepMoving = false;
+                sleep(200);
+            }else if(!keepMoving && gamepad1.a){
+                keepMoving = true; 
+                sleep(200);
+            }
+            
+            
+            if (keepMoving){ // Move up
                 intake.setPower(1);
                 ramp.setPower(-1);
-            }else if (gamepad1.y){ // Move up
+            }else if (gamepad1.y){ // Move down
                 intake.setPower(-1);
                 ramp.setPower(1);
             }else{
@@ -194,14 +206,20 @@ public class Reapr_Main_TeleOP extends LinearOpMode {
                 bucketArm.setPower(0);
             }
 
+            // Jesus
+            if (gamepad1.dpad_up){
+                autonServo.setPower(1);
+            }else if (gamepad1.dpad_down){
+                autonServo.setPower(-1);
+            }else{
+                autonServo.setPower(0);
+            }
 
             // Bucket
             if(gamepad2.b){
                 bucket.setPower(1);
-                //telemetry.update();
             }else if(gamepad2.x){
                 bucket.setPower(-1);
-                //telemetry.update();
             }else{
                 bucket.setPower(0);
             }
