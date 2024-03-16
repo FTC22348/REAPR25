@@ -307,7 +307,7 @@
                  encoderDrive(DRIVE_SPEED, 9, -9, -9, 9, 1); // Move right
  
  
-                 sleep(500)
+                 sleep(500);
                  turnServo(1); // Down
  
                  sleep(500);
