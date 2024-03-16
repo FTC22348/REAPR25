@@ -61,8 +61,8 @@
   * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
   * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
   */
- @Autonomous(name = "RED AUTON STATES (Far)", group = "Concept")
- public class AUTONRED_Far_States extends LinearOpMode {
+ @Autonomous(name = "BLUE AUTON STATES (Far)", group = "Concept")
+ public class AUTONBLUE_Far_States2 extends LinearOpMode {
      private boolean hasTargets;
      private int generatedScenario;
  
@@ -97,13 +97,13 @@
  
      // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
      // this is only used for Android Studio when using models in Assets.
-     private static final String TFOD_MODEL_ASSET = "redTest1.tflite";
+     private static final String TFOD_MODEL_ASSET = "blueTest1.tflite";
      // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
      // this is used when uploading models directly to the RC using the model upload interface.
-     private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/redTest1.tflite";
+     private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/blueTest1.tflite";
      // Define the labels recognized in the model for TFOD (must be in training order!)
      private static final String[] LABELS = {
-         "blue",
+         "red",
      };
  
  
@@ -216,18 +216,18 @@
              sleep(800);
              encoderDrive(DRIVE_SPEED, -25, -25, -25, -25, 5); // Backward
              bucketArm(1.0, 1000); // Move Arm Up
-             sleep(200);
+             sleep(800);
              encoderDrive(DRIVE_SPEED, 5.5, 5.5, 5.5, 5.5, 5); // Forward
              rotateRamp();
 
              encoderDrive(DRIVE_SPEED, 19.5, 19.5, 19.5, 19.5, 5); // Forward
              bucketArm(-1.0, 600); // Move Arm Down             
              
-             rotate(84, TURN_SPEED);
+             rotate(-80, TURN_SPEED);
              sleep(800);
              encoderDrive(DRIVE_SPEED, 68, 68, 68, 68, 5); // Forward
              sleep(800);
-             encoderDrive(DRIVE_SPEED, -19.5, 19.5, 19.5, -19.5, 2); // Strafe left
+             encoderDrive(DRIVE_SPEED, 19.5, -19.5, -19.5, 19.5, 2); // Strafe right
              encoderDrive(DRIVE_SPEED, 4, 4, 4, 4, 2); // Forward
              sleep(200);
 
@@ -238,9 +238,9 @@
 
          } else {
 
-            // CODE FOR LEFT HAND SIDE PROP IN FAR POSITION
+            // CODE FOR RIGHT HAND SIDE PROP IN FAR POSITION
  
-             encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Strafe left to check
+             encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Strafe right to check
  
              sleep(1000);
              telemetryTfod();
@@ -252,7 +252,7 @@
                 //  encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Come back to original position             
                 encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5); // Forward
                 sleep(800);
-                rotate(-78, TURN_SPEED); // Camera Towards Board
+                rotate(83, TURN_SPEED); // Camera Towards Board
 
                 
                 sleep(300);
@@ -260,13 +260,13 @@
                 encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 2); // Move Forward
                 rotateRamp();
 
-                 encoderDrive(DRIVE_SPEED, 27, -27, -27, 27, 5); // Strafe Right
+                 encoderDrive(DRIVE_SPEED, -27.5, 27.5, 27.5, -27.5, 5); // Strafe Left
                  sleep(200);
                  bucketArm(-1.0, 600); // Move Arm Down
                  sleep(200);
                  encoderDrive(DRIVE_SPEED, 66, 66, 66, 66, 5); // Move Forward
                  sleep(800);
-                 encoderDrive(DRIVE_SPEED, -30, 30, 30, -30, 5); // Strafe Left
+                 encoderDrive(DRIVE_SPEED, 30, -30, -30, 30, 5); // Strafe Right
                  sleep(600);
                  encoderDrive(DRIVE_SPEED, 6, 6, 6, 6, 2); // Forward
                  sleep(200);
@@ -277,10 +277,10 @@
                  turnServo(-1);
 
              } else {
-                 //TO THE RIGHT PROP NEAR THE TRUSS
+                 //TO THE LEFT PROP NEAR THE TRUSS
                  encoderDrive(DRIVE_SPEED, 18, 18, 18, 18, 5); // Move Forward
                  sleep(500);
-                 rotate(86, 0.4); // Camera Away From Board
+                 rotate(-86, 0.4); // Camera Away From Board
                  sleep(500);
                  bucketArm(1.0, 1000); // Move Arm Up
                  encoderDrive(DRIVE_SPEED, -9.5, -9.5, -9.5, -9.5, 5); // Back Up
@@ -289,11 +289,11 @@
                  sleep(200);
                  rotate(180, 0.3); //rotate to face board
                  bucketArm(-1, 600); // bring arm down
-                 encoderDrive(DRIVE_SPEED, 21, -21, -21, 21, 3); // strafe right
+                 encoderDrive(DRIVE_SPEED, -21, 21, 21, -21, 3); // strafe left
                  sleep(800);
                  encoderDrive(DRIVE_SPEED, 65, 65, 65, 65, 5); // go forward
                  sleep(800);
-                 encoderDrive(DRIVE_SPEED, -14, 14, 14, -14, 2); // strafe left
+                 encoderDrive(DRIVE_SPEED, 14, -14, -14, 14, 2); // strafe right
                  sleep(400);
                  encoderDrive(DRIVE_SPEED, 7, 7, 7, 7, 2); //go forward
                  sleep(200);

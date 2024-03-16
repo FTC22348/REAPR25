@@ -30,7 +30,6 @@
  package org.firstinspires.ftc.teamcode;
 
  import com.qualcomm.hardware.bosch.BNO055IMU;
- import com.qualcomm.robotcore.hardware.CRServo;
  import com.qualcomm.robotcore.hardware.Servo;
  import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
  import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -61,8 +60,8 @@
   * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
   * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
   */
- @Autonomous(name = "RED AUTON STATES (Far)", group = "Concept")
- public class AUTONRED_Far_States extends LinearOpMode {
+ @Autonomous(name = "BLUE AUTON STATES (PARK CENTER)", group = "Concept")
+ public class AUTONBLUE_CentralPark extends LinearOpMode {
      private boolean hasTargets;
      private int generatedScenario;
  
@@ -90,20 +89,20 @@
      static final double WHEEL_DIAMETER_INCHES = 3.78;
      static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
          (WHEEL_DIAMETER_INCHES * 3.14159);
-     static final double DRIVE_SPEED = 0.65;
+     static final double DRIVE_SPEED = 0.6;
      static final double TURN_SPEED = 0.4;
  
      private static final boolean USE_WEBCAM = true; // true for webcam, false for phone camera
  
      // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
      // this is only used for Android Studio when using models in Assets.
-     private static final String TFOD_MODEL_ASSET = "redTest1.tflite";
+     private static final String TFOD_MODEL_ASSET = "blueTest1.tflite";
      // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
      // this is used when uploading models directly to the RC using the model upload interface.
-     private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/redTest1.tflite";
+     private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/blueTest1.tflite";
      // Define the labels recognized in the model for TFOD (must be in training order!)
      private static final String[] LABELS = {
-         "blue",
+         "red",
      };
  
  
@@ -208,101 +207,120 @@
  
          if (hasTargets) {
              // MIDDLE TARGET
-
+ 
              //! This is working, do not touch
-
-            
-             rotate(182, TURN_SPEED);
-             sleep(800);
-             encoderDrive(DRIVE_SPEED, -25, -25, -25, -25, 5); // Backward
-             bucketArm(1.0, 1000); // Move Arm Up
-             sleep(200);
-             encoderDrive(DRIVE_SPEED, 5.5, 5.5, 5.5, 5.5, 5); // Forward
+ 
+             encoderDrive(0.4, 34.5, 34.5, 34.5, 34.5, 5); // Forward
              rotateRamp();
-
-             encoderDrive(DRIVE_SPEED, 19.5, 19.5, 19.5, 19.5, 5); // Forward
-             bucketArm(-1.0, 600); // Move Arm Down             
-             
-             rotate(84, TURN_SPEED);
+             encoderDrive(DRIVE_SPEED, 2, 2, 2, 2, 5); // Forward
+             encoderDrive(DRIVE_SPEED, -24, 24, 24, -24, 5); // Left
+             encoderDrive(DRIVE_SPEED, -18, -18, -18, -18, 5); // back
+ 
              sleep(800);
-             encoderDrive(DRIVE_SPEED, 68, 68, 68, 68, 5); // Forward
+             rotate(90, TURN_SPEED);
              sleep(800);
-             encoderDrive(DRIVE_SPEED, -19.5, 19.5, 19.5, -19.5, 2); // Strafe left
-             encoderDrive(DRIVE_SPEED, 4, 4, 4, 4, 2); // Forward
-             sleep(200);
-
+ 
+             encoderDrive(DRIVE_SPEED, 12.5, 12.5, 12.5, 12.5, 5); // Forward
+ 
              turnServo(1);
              sleep(500);
-             encoderDrive(DRIVE_SPEED, -2.75, -2.75, -2.75, -2.75, 5); // Back Up
+             encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Back Up
+ 
+             encoderDrive(DRIVE_SPEED, 20, -20, -20, 20, 5); // Move right and park
              turnServo(-1);
-
+ 
+ 
          } else {
-
-            // CODE FOR LEFT HAND SIDE PROP IN FAR POSITION
- 
-             encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Strafe left to check
- 
+             encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Move to the left to check
              sleep(1000);
              telemetryTfod();
  
              if (hasTargets) {
+                 //TO THE LEFT
  
-                 //TO THE LEFT (PROP) 
-
-                //  encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Come back to original position             
-                encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5); // Forward
-                sleep(800);
-                rotate(-78, TURN_SPEED); // Camera Towards Board
-
-                
-                sleep(300);
-                bucketArm(1.0, 1000); // Move Arm Up
-                encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 2); // Move Forward
-                rotateRamp();
-
-                 encoderDrive(DRIVE_SPEED, 27, -27, -27, 27, 5); // Strafe Right
-                 sleep(200);
-                 bucketArm(-1.0, 600); // Move Arm Down
-                 sleep(200);
-                 encoderDrive(DRIVE_SPEED, 66, 66, 66, 66, 5); // Move Forward
-                 sleep(800);
-                 encoderDrive(DRIVE_SPEED, -30, 30, 30, -30, 5); // Strafe Left
-                 sleep(600);
-                 encoderDrive(DRIVE_SPEED, 6, 6, 6, 6, 2); // Forward
-                 sleep(200);
-
-                 turnServo(1);
-                 sleep(500);
-                 encoderDrive(DRIVE_SPEED, -2.75, -2.75, -2.75, -2.75, 5); // Back Up
-                 turnServo(-1);
-
-             } else {
-                 //TO THE RIGHT PROP NEAR THE TRUSS
-                 encoderDrive(DRIVE_SPEED, 18, 18, 18, 18, 5); // Move Forward
-                 sleep(500);
-                 rotate(86, 0.4); // Camera Away From Board
-                 sleep(500);
-                 bucketArm(1.0, 1000); // Move Arm Up
-                 encoderDrive(DRIVE_SPEED, -9.5, -9.5, -9.5, -9.5, 5); // Back Up
-                 rotateRamp();
-                 encoderDrive(DRIVE_SPEED, 3, 3, 3, 3, 2); // go forward
-                 sleep(200);
-                 rotate(180, 0.3); //rotate to face board
-                 bucketArm(-1, 600); // bring arm down
-                 encoderDrive(DRIVE_SPEED, 21, -21, -21, 21, 3); // strafe right
-                 sleep(800);
-                 encoderDrive(DRIVE_SPEED, 65, 65, 65, 65, 5); // go forward
-                 sleep(800);
-                 encoderDrive(DRIVE_SPEED, -14, 14, 14, -14, 2); // strafe left
-                 sleep(400);
-                 encoderDrive(DRIVE_SPEED, 7, 7, 7, 7, 2); //go forward
-                 sleep(200);
-                 turnServo(1);
-                 sleep(500);
-                 encoderDrive(DRIVE_SPEED, -2.75, -2.75, -2.75, -2.75, 5); // Back Up
-                 turnServo(-1);
-
+                 /* 
+ 
+                 encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 1); // Move back
+                 encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
+                 rotate(-80, TURN_SPEED);
                  
+                 encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Backwards before rotate
+                 rotateRamp();
+                 
+ 
+                 encoderDrive(DRIVE_SPEED, 17, -17, -17, 17, 5); // Move right
+ 
+                 encoderDrive(DRIVE_SPEED, -20, -20, -20, -20, 5); // Backwards
+                 rotate(180, TURN_SPEED);
+ 
+                 encoderDrive(DRIVE_SPEED, 16, -16, -16, 16, 5); // Move back left
+ 
+                 encoderDrive(DRIVE_SPEED, 10, 10, 10, 10, 5); // Backwards more (now forwards, towards the board)
+ 
+                 turnServo(1); // Down
+ 
+                 sleep(1000);
+ 
+                 turnServo(-1); // Up
+ 
+                 encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Forwards, away from board
+                 */
+ 
+ 
+                 //encoderDrive(DRIVE_SPEED, -2, 2, 2, -2, 5); // Move left
+ 
+                 //! This is working, do not touch
+ 
+                 encoderDrive(DRIVE_SPEED, 27, 27, 27, 27, 5);
+                 sleep(800);
+                 rotate(90, TURN_SPEED);
+                 rotateRamp();
+                 encoderDrive(DRIVE_SPEED, -16, 16, 16, -16, 5); // Move left
+                 sleep(800);
+                 encoderDrive(DRIVE_SPEED, 27, 27, 27, 27, 5); // Move forward
+ 
+                 turnServo(1);
+                 sleep(500);
+                 encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5);
+                 
+                 encoderDrive(DRIVE_SPEED, 50, -50, -50, 50, 5); // Move right and park
+                 turnServo(-1);
+ 
+             } else {                
+                 //TO THE RIGHT
+ 
+                 //! This is working, do not touch
+                 
+                 encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Move right
+                 sleep(500);
+                 encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
+ 
+                 sleep(500);
+                 rotate(90, TURN_SPEED);
+                 sleep(800);
+ 
+                 encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Backwards before rotate
+                 rotateRamp();
+ 
+                 encoderDrive(DRIVE_SPEED, 35.5, 35.5, 35.5, 35.5, 5);
+ 
+                 encoderDrive(DRIVE_SPEED, 9, -9, -9, 9, 1); // Move right
+ 
+ 
+                 sleep(500);
+                 turnServo(1); // Down
+ 
+                 sleep(500);
+                 encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Backwards 
+ 
+                 
+                 encoderDrive(DRIVE_SPEED, 40, -40, -40, 40, 5); // Park
+                 turnServo(-1); // 
+ 
+ 
+ 
+                 
+ 
              }
          }
  
@@ -334,7 +352,7 @@
          // Create the TensorFlow processor by using a builder.
          tfod = new TfodProcessor.Builder()
  
- 
+         
  
              //.setModelAssetName(TFOD_MODEL_ASSET)
              .setModelFileName(TFOD_MODEL_FILE)
@@ -412,7 +430,7 @@
      } // end method telemetryTfod()
  
      // Method for driving with encoder
-     public void encoderDrive(double speed, double leftInches, double rightInches, double backleftInches, double backrightInches, double timeoutS) {
+     public void encoderDrive(double speed, double leftInches, double rightInches, double backleftInches, double backrightInches, double timeoutS){
          //leftInches *= -1;
          //rightInches *= -1;
          //backleftInches *= -1;
@@ -551,36 +569,42 @@
  
      public void turnServo(double servoPosition) {
          //autonServo.setPosition(Range.clip(servoPosition, MIN_POSITION, MAX_POSITION));
-         if (servoPosition == 1) {
-             autonServo.setPower(-0.2);
+         if(servoPosition==1){
+             autonServo.setPower(-0.4);
              sleep(2500);
              autonServo.setPower(0);
-         } else {
+         }else{
              autonServo.setPower(1);
              sleep(3000);
              autonServo.setPower(0);
          }
- 
+         
      }
  
      public void rotateRamp() {
+         // Move arm up
+         bucketArm.setPower(1);
+         sleep(1000);
+         bucketArm.setPower(0);
+ 
          // Move ramp
          ramp.setPower(-1);
          intake.setPower(1);
-         sleep(2500);
+         sleep(4000);
          ramp.setPower(0);
          intake.setPower(0);
-     }
-
-     public void bucketArm(double power, int sleepTime){
-        // Postive Power: Bucket Moves Up
-        // Negative Power: Bucket Moves Down
-        bucketArm.setPower(power);
-        sleep(sleepTime);
-        bucketArm.setPower(0);
+ 
+ 
+ 
+         //Move arm down
+         /*
+         bucketArm.setPower(-0.5);
+         sleep(1000);
+         bucketArm.setPower(0);
+         */
      }
  
      //
  
  
- } // End of the AUTONRED_States class
+ } // End of the AUTONBLUE_States class

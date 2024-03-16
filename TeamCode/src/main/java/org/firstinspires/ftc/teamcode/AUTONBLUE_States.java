@@ -216,18 +216,19 @@ public class AUTONBLUE_States extends LinearOpMode {
             encoderDrive(DRIVE_SPEED, -24, 24, 24, -24, 5); // Left
             encoderDrive(DRIVE_SPEED, -18, -18, -18, -18, 5); // back
 
+            sleep(800);
             rotate(90, TURN_SPEED);
+            sleep(800);
 
             encoderDrive(DRIVE_SPEED, 12.5, 12.5, 12.5, 12.5, 5); // Forward
 
             turnServo(1);
-            
-            encoderDrive(DRIVE_SPEED, -1, -1, -1, -1, 5); // Forward
-
-            turnServo(-1);
-
+            sleep(500);
+            encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Back Up
 
             encoderDrive(DRIVE_SPEED, -20, 20, 20, -20, 5); // Move left and park
+            turnServo(-1);
+
 
         } else {
             encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Move to the left to check
@@ -271,45 +272,50 @@ public class AUTONBLUE_States extends LinearOpMode {
                 //! This is working, do not touch
 
                 encoderDrive(DRIVE_SPEED, 27, 27, 27, 27, 5);
-                rotateRamp();
-                encoderDrive(DRIVE_SPEED, -17, 17, 17, -17, 5); // Move left
+                sleep(800);
                 rotate(90, TURN_SPEED);
-                encoderDrive(DRIVE_SPEED, 10, 10, 10, 10, 5); // Move towards board
+                rotateRamp();
                 encoderDrive(DRIVE_SPEED, -16, 16, 16, -16, 5); // Move left
+                sleep(800);
+                encoderDrive(DRIVE_SPEED, 27, 27, 27, 27, 5); // Move forward
 
                 turnServo(1);
-                encoderDrive(DRIVE_SPEED, -2, -2, -2, -2, 5);
-
-                turnServo(-1);
+                sleep(500);
+                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5);
                 
                 encoderDrive(DRIVE_SPEED, -16, 16, 16, -16, 5); // Move left and park
+                turnServo(-1);
 
             } else {                
                 //TO THE RIGHT
 
                 //! This is working, do not touch
                 
-                encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Move back
+                encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Move right
+                sleep(500);
                 encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
+
+                sleep(500);
                 rotate(90, TURN_SPEED);
-         
+                sleep(800);
+
                 encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Backwards before rotate
                 rotateRamp();
 
                 encoderDrive(DRIVE_SPEED, 35.5, 35.5, 35.5, 35.5, 5);
 
-                encoderDrive(DRIVE_SPEED, 9, -9, -9, 9, 1); // Move back
+                encoderDrive(DRIVE_SPEED, 9, -9, -9, 9, 1); // Move right
 
 
-
+                sleep(500);
                 turnServo(1); // Down
 
-                sleep(1000);
+                sleep(500);
+                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Backwards 
 
-
-                turnServo(-1); // 
                 
                 encoderDrive(DRIVE_SPEED, -23, 23, 23, -23, 5); // Park
+                turnServo(-1); // 
 
 
 
