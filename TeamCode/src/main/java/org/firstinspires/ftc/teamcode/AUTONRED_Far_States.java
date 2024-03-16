@@ -249,50 +249,60 @@
  
                  //TO THE LEFT (PROP) 
 
-                 encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Come back to original position             
-                 rotate(-84, TURN_SPEED);
+                //  encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Come back to original position             
+                encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5); // Forward
+                sleep(800);
+                rotate(-78, TURN_SPEED); // Camera Towards Board
 
-
-                encoderDrive(DRIVE_SPEED, -20, 20, 20, -20, 1); // Strafe Left
+                
+                sleep(300);
                 bucketArm(1.0, 1000); // Move Arm Up
-                encoderDrive(DRIVE_SPEED, -5, -5, -5, -5, 1); // Back Up
-                 rotateRamp();
-                 encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 5); // Move Forward
+                encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 2); // Move Forward
+                rotateRamp();
+
+                 encoderDrive(DRIVE_SPEED, 27, -27, -27, 27, 5); // Strafe Right
+                 sleep(200);
                  bucketArm(-1.0, 600); // Move Arm Down
+                 sleep(200);
+                 encoderDrive(DRIVE_SPEED, 66, 66, 66, 66, 5); // Move Forward
+                 sleep(800);
+                 encoderDrive(DRIVE_SPEED, -30, 30, 30, -30, 5); // Strafe Left
+                 sleep(600);
+                 encoderDrive(DRIVE_SPEED, 6, 6, 6, 6, 2); // Forward
+                 sleep(200);
 
-                 encoderDrive(DRIVE_SPEED, 5, -5, -5, 5, 1); // Strafe Right
-                //  turnServo(1); // Rotates "Jesus" up to drop yellow pixel on backdrop
- 
-                //  sleep(1000);
-                //  turnServo(-1); // Rotates "Jesus" back to original position
- 
-                //  encoderDrive(DRIVE_SPEED, 12, -12, -12, 12, 12); // Park (Right Corner)
-
+                 turnServo(1);
+                 sleep(500);
+                 encoderDrive(DRIVE_SPEED, -2.75, -2.75, -2.75, -2.75, 5); // Back Up
+                 turnServo(-1);
 
              } else {
                  //TO THE RIGHT PROP NEAR THE TRUSS
-                //  rotate(80, TURN_SPEED); // Camera facing away from back drop
-                //  encoderDrive(DRIVE_SPEED, 18, -18, -18, 18, 2); // Strafe to right
-                //  bucketArm(1.0);
+                 encoderDrive(DRIVE_SPEED, 18, 18, 18, 18, 5); // Move Forward
+                 sleep(500);
+                 rotate(86, 0.4); // Camera Away From Board
+                 sleep(500);
+                 bucketArm(1.0, 1000); // Move Arm Up
+                 encoderDrive(DRIVE_SPEED, -9.5, -9.5, -9.5, -9.5, 5); // Back Up
+                 rotateRamp();
+                 encoderDrive(DRIVE_SPEED, 3, 3, 3, 3, 2); // go forward
+                 sleep(200);
+                 rotate(180, 0.3); //rotate to face board
+                 bucketArm(-1, 600); // bring arm down
+                 encoderDrive(DRIVE_SPEED, 21, -21, -21, 21, 3); // strafe right
+                 sleep(800);
+                 encoderDrive(DRIVE_SPEED, 65, 65, 65, 65, 5); // go forward
+                 sleep(800);
+                 encoderDrive(DRIVE_SPEED, -14, 14, 14, -14, 2); // strafe left
+                 sleep(400);
+                 encoderDrive(DRIVE_SPEED, 7, 7, 7, 7, 2); //go forward
+                 sleep(200);
+                 turnServo(1);
+                 sleep(500);
+                 encoderDrive(DRIVE_SPEED, -2.75, -2.75, -2.75, -2.75, 5); // Back Up
+                 turnServo(-1);
 
-
- 
-                //  rotate(-78, TURN_SPEED); // Turn camera facing board
-                //  encoderDrive(DRIVE_SPEED, -18, 18, 18, -18, 2); // Strafe to left before backing
-                //  encoderDrive(DRIVE_SPEED, -12, -12, -12, -12, 2); // Back Up
-                //  rotateRamp(); // Arm up and ramp moves 
-                //  encoderDrive(DRIVE_SPEED, 50, 50, 50, 50, 2); // Move Forward
-                // //  sleep(1000);
-                //  encoderDrive(DRIVE_SPEED, -10, 10, 10, -10, 2); // Strafe to left before rotating "Jesus"
-                //  encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 2); // Move Forward
-                //  turnServo(1); // Rotates "Jesus" up to drop yellow pixel on backdrop
- 
-                //  sleep(1000);
-                //  turnServo(-1); // Rotates "Jesus" back to original position
-
-                //  encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2); // Back Up
-                //  encoderDrive(DRIVE_SPEED, 30, -30, -30, 30, 5); // Park (Right Corner)
-
+                 
              }
          }
  
