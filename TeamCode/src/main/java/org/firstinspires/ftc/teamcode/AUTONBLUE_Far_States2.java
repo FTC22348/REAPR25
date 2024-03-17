@@ -201,6 +201,8 @@
          //frontLeft, frontRight, backLeft, backRight
          sleep(1000);
          telemetryTfod();
+         telemetryTfod();
+
  
  
          encoderDrive(DRIVE_SPEED, 3, 3, 3, 3, 0.5);
@@ -212,23 +214,23 @@
              //! This is working, do not touch
 
             
-             rotate(182, TURN_SPEED);
+             rotate(180, TURN_SPEED);
              sleep(800);
-             encoderDrive(DRIVE_SPEED, -25, -25, -25, -25, 5); // Backward
+             encoderDrive(DRIVE_SPEED, -18.5, -18.5, -18.5, -18.5, 5); // Backward
              bucketArm(1.0, 1000); // Move Arm Up
-             sleep(800);
-             encoderDrive(DRIVE_SPEED, 5.5, 5.5, 5.5, 5.5, 5); // Forward
+             sleep(200);
+             //encoderDrive(DRIVE_SPEED, 5.5, 5.5, 5.5, 5.5, 5); // Forward
              rotateRamp();
 
-             encoderDrive(DRIVE_SPEED, 19.5, 19.5, 19.5, 19.5, 5); // Forward
+             encoderDrive(DRIVE_SPEED, 20, 20, 20, 20, 5); // Forward
              bucketArm(-1.0, 600); // Move Arm Down             
              
              rotate(-80, TURN_SPEED);
              sleep(800);
-             encoderDrive(DRIVE_SPEED, 68, 68, 68, 68, 5); // Forward
+             encoderDrive(DRIVE_SPEED, 63, 63, 63, 63, 5); // Forward
              sleep(800);
-             encoderDrive(DRIVE_SPEED, 19.5, -19.5, -19.5, 19.5, 2); // Strafe right
-             encoderDrive(DRIVE_SPEED, 4, 4, 4, 4, 2); // Forward
+             encoderDrive(DRIVE_SPEED, 21.5, -21.5, -21.5, 21.5, 2); // Strafe right
+             encoderDrive(DRIVE_SPEED, 10, 10, 10, 10, 2); // Forward
              sleep(200);
 
              turnServo(1);
@@ -238,7 +240,7 @@
 
          } else {
 
-            // CODE FOR RIGHT HAND SIDE PROP IN FAR POSITION
+            // CODE FOR LEFT HAND SIDE PROP IN FAR POSITION
  
              encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Strafe right to check
  
@@ -247,12 +249,12 @@
  
              if (hasTargets) {
  
-                 //TO THE LEFT (PROP) 
+                 //TO THE RIGHT (PROP) 
 
                 //  encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Come back to original position             
                 encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5); // Forward
                 sleep(800);
-                rotate(83, TURN_SPEED); // Camera Towards Board
+                rotate(84, TURN_SPEED); // Camera Towards Board
 
                 
                 sleep(300);
@@ -260,15 +262,15 @@
                 encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 2); // Move Forward
                 rotateRamp();
 
-                 encoderDrive(DRIVE_SPEED, -27.5, 27.5, 27.5, -27.5, 5); // Strafe Left
+                 encoderDrive(DRIVE_SPEED, -28, 28, 28, -28, 5); // Strafe left
                  sleep(200);
                  bucketArm(-1.0, 600); // Move Arm Down
                  sleep(200);
-                 encoderDrive(DRIVE_SPEED, 66, 66, 66, 66, 5); // Move Forward
+                 encoderDrive(DRIVE_SPEED, 63, 63, 63, 63, 5); // Move Forward
                  sleep(800);
-                 encoderDrive(DRIVE_SPEED, 30, -30, -30, 30, 5); // Strafe Right
+                 encoderDrive(DRIVE_SPEED, 31.5, -31.5, -31.5, 31.5, 5); // Strafe right
                  sleep(600);
-                 encoderDrive(DRIVE_SPEED, 6, 6, 6, 6, 2); // Forward
+                 encoderDrive(DRIVE_SPEED, 11, 11, 11, 11, 2); // Forward
                  sleep(200);
 
                  turnServo(1);
@@ -279,9 +281,9 @@
              } else {
                  //TO THE LEFT PROP NEAR THE TRUSS
                  encoderDrive(DRIVE_SPEED, 18, 18, 18, 18, 5); // Move Forward
-                 sleep(500);
+                 sleep(400);
                  rotate(-86, 0.4); // Camera Away From Board
-                 sleep(500);
+                 sleep(400);
                  bucketArm(1.0, 1000); // Move Arm Up
                  encoderDrive(DRIVE_SPEED, -9.5, -9.5, -9.5, -9.5, 5); // Back Up
                  rotateRamp();
@@ -289,16 +291,16 @@
                  sleep(200);
                  rotate(180, 0.3); //rotate to face board
                  bucketArm(-1, 600); // bring arm down
-                 encoderDrive(DRIVE_SPEED, -21, 21, 21, -21, 3); // strafe left
-                 sleep(800);
-                 encoderDrive(DRIVE_SPEED, 65, 65, 65, 65, 5); // go forward
-                 sleep(800);
-                 encoderDrive(DRIVE_SPEED, 14, -14, -14, 14, 2); // strafe right
+                 encoderDrive(DRIVE_SPEED, -22.5, 22.5, 22.5, -22.5, 3); // strafe left
                  sleep(400);
-                 encoderDrive(DRIVE_SPEED, 7, 7, 7, 7, 2); //go forward
+                 encoderDrive(DRIVE_SPEED, 62, 62, 62, 62, 5); // go forward
+                 sleep(400);
+                 encoderDrive(DRIVE_SPEED, 16.5, -16.5, -16.5, 16.5, 2); // strafe right
+                 sleep(200);
+                 encoderDrive(DRIVE_SPEED, 12, 12, 12, 12, 2); //go forward
                  sleep(200);
                  turnServo(1);
-                 sleep(500);
+                 sleep(400);
                  encoderDrive(DRIVE_SPEED, -2.75, -2.75, -2.75, -2.75, 5); // Back Up
                  turnServo(-1);
 
