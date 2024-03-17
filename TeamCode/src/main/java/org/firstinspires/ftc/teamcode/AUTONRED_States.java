@@ -97,7 +97,7 @@
  
      // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
      // this is only used for Android Studio when using models in Assets.
-     private static final String TFOD_MODEL_ASSET = "redTest1.tflite";
+     private static final String TFOD_MODEL_ASSET = "rednew.tflite"; // redTest1.tflite
      // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
      // this is used when uploading models directly to the RC using the model upload interface.
      private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/redTest1.tflite";
@@ -211,7 +211,7 @@
 
              //! This is working, do not touch
  
-             encoderDrive(0.4, 34.5, 34.5, 34.5, 34.5, 5); // Forward
+             encoderDrive(0.4, 34, 34, 34, 34, 5); // Forward
              rotateRamp();
              encoderDrive(DRIVE_SPEED, 2, 2, 2, 2, 5); // Forward
              encoderDrive(DRIVE_SPEED, 24, -24, -24, 24, 5); // Right
@@ -219,7 +219,7 @@
  
              rotate(-84, TURN_SPEED);
  
-             encoderDrive(DRIVE_SPEED, 13.5, 13.5, 13.5, 13.5, 5); // Forward
+             encoderDrive(DRIVE_SPEED, 14, 14, 14, 14, 5); // Forward
              encoderDrive(DRIVE_SPEED, 1, -1, -1, 1, 5); // Move right 
 
 
@@ -356,7 +356,7 @@
          visionPortal = builder.build();
  
          // Set confidence threshold for TFOD recognitions, at any time.
-         //tfod.setMinResultConfidence(0.75f);
+         tfod.setMinResultConfidence(0.90f);
  
          // Disable or re-enable the TFOD processor at any time.
          //visionPortal.setProcessorEnabled(tfod, true);
