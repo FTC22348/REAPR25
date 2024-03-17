@@ -259,7 +259,7 @@
                 
                 sleep(300);
                 bucketArm(1.0, 1000); // Move Arm Up
-                encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 2); // Move Forward
+                encoderDrive(DRIVE_SPEED, 4, 4, 4, 4, 2); // Move Forward
                 rotateRamp();
 
                  encoderDrive(DRIVE_SPEED, 27, -27, -27, 27, 5); // Strafe Right
