@@ -282,20 +282,20 @@
                  //TO THE LEFT PROP NEAR THE TRUSS
                  encoderDrive(DRIVE_SPEED, 18, 18, 18, 18, 5); // Move Forward
                  sleep(400);
-                 rotate(-86, 0.4); // Camera Away From Board
+                 rotate(-82, 0.4); // Camera Away From Board
                  sleep(400);
                  bucketArm(1.0, 1000); // Move Arm Up
                  encoderDrive(DRIVE_SPEED, -9.5, -9.5, -9.5, -9.5, 5); // Back Up
                  rotateRamp();
                  encoderDrive(DRIVE_SPEED, 3, 3, 3, 3, 2); // go forward
                  sleep(200);
-                 rotate(180, 0.3); //rotate to face board
+                 rotate(187, 0.3); //rotate to face board
                  bucketArm(-1, 600); // bring arm down
-                 encoderDrive(DRIVE_SPEED, -22.5, 22.5, 22.5, -22.5, 3); // strafe left
+                 encoderDrive(DRIVE_SPEED, -25.5, 25.5, 25.5, -25.5, 3); // strafe left
                  sleep(400);
-                 encoderDrive(DRIVE_SPEED, 62, 62, 62, 62, 5); // go forward
+                 encoderDrive(DRIVE_SPEED*1.2, 62, 62, 62, 62, 5); // go forward
                  sleep(400);
-                 encoderDrive(DRIVE_SPEED, 16.5, -16.5, -16.5, 16.5, 2); // strafe right
+                 encoderDrive(DRIVE_SPEED, 14, -14, -14, 14, 2); // strafe right
                  sleep(200);
                  encoderDrive(DRIVE_SPEED, 12, 12, 12, 12, 2); //go forward
                  sleep(200);
