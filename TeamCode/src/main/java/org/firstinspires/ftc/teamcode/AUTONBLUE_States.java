@@ -224,7 +224,7 @@ public class AUTONBLUE_States extends LinearOpMode {
 
             turnServo(1);
             sleep(500);
-            encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Back Up
+            encoderDrive((DRIVE_SPEED * 0.5), -3, -3, -3, -3, 5); // Back Up
 
             encoderDrive(DRIVE_SPEED, -20, 20, 20, -20, 5); // Move left and park
             turnServo(-1);
@@ -236,52 +236,30 @@ public class AUTONBLUE_States extends LinearOpMode {
             telemetryTfod();
 
             if (hasTargets) {
-                //TO THE LEFT
-
-                /* 
-
-                encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 1); // Move back
-                encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
-                rotate(-80, TURN_SPEED);
-                
-                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Backwards before rotate
-                rotateRamp();
-                
-
-                encoderDrive(DRIVE_SPEED, 17, -17, -17, 17, 5); // Move right
-
-                encoderDrive(DRIVE_SPEED, -20, -20, -20, -20, 5); // Backwards
-                rotate(180, TURN_SPEED);
-
-                encoderDrive(DRIVE_SPEED, 16, -16, -16, 16, 5); // Move back left
-
-                encoderDrive(DRIVE_SPEED, 10, 10, 10, 10, 5); // Backwards more (now forwards, towards the board)
-
-                turnServo(1); // Down
-
-                sleep(1000);
-
-                turnServo(-1); // Up
-
-                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Forwards, away from board
-                */
+                //TO THE LEFT  
 
 
                 //encoderDrive(DRIVE_SPEED, -2, 2, 2, -2, 5); // Move left
 
                 //! This is working, do not touch
 
-                encoderDrive(DRIVE_SPEED, 27, 27, 27, 27, 5);
+                encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5);
                 sleep(800);
                 rotate(90, TURN_SPEED);
+                sleep(500);
+                encoderDrive(DRIVE_SPEED, 8, 8, 8, 8, 5); // Forwads before rotate
                 rotateRamp();
-                encoderDrive(DRIVE_SPEED, -16, 16, 16, -16, 5); // Move left
                 sleep(800);
-                encoderDrive(DRIVE_SPEED, 27, 27, 27, 27, 5); // Move forward
+                encoderDrive(DRIVE_SPEED, 16, 16, 16, 16, 5); // Move forward
+                sleep(500);
+                encoderDrive(DRIVE_SPEED, -11, 11, 11, -11, 5); // Move left
+                sleep(500);
+                encoderDrive(DRIVE_SPEED, 1.5, 1.5, 1.5, 1.5, 2); // Forward
+
 
                 turnServo(1);
                 sleep(500);
-                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5);
+                encoderDrive((DRIVE_SPEED * 0.5), -3, -3, -3, -3, 5);
                 
                 encoderDrive(DRIVE_SPEED, -16, 16, 16, -16, 5); // Move left and park
                 turnServo(-1);
@@ -291,31 +269,23 @@ public class AUTONBLUE_States extends LinearOpMode {
 
                 //! This is working, do not touch
                 
-                encoderDrive(DRIVE_SPEED, 10, -10, -10, 10, 2); // Move right
-                sleep(500);
-                encoderDrive(DRIVE_SPEED, 24, 24, 24, 24, 1);
+                rotate(90, TURN_SPEED); // Turn camera facing board
+                 sleep(500);
+                 encoderDrive(DRIVE_SPEED, 21, -21, -21, 21, 3); // Strafe to right before backing
+                 sleep(500);
+                 encoderDrive(DRIVE_SPEED, -12, -12, -12, -12, 2); // Back Up
+                 rotateRamp(); // Arm up and ramp moves 
+                 encoderDrive(DRIVE_SPEED, 30, 30, 30, 30, 3); // Move Forward
+                 sleep(500);
+                 encoderDrive(DRIVE_SPEED, 7, -7, -7, 7, 2); // Strafe to right before rotating "Jesus"
+                 encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 2); // Move Forward
+                 turnServo(1); // Rotates "Jesus" up to drop yellow pixel on backdrop
+ 
+                 sleep(500);
 
-                sleep(500);
-                rotate(90, TURN_SPEED);
-                sleep(800);
-
-                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Backwards before rotate
-                rotateRamp();
-
-                encoderDrive(DRIVE_SPEED, 35.5, 35.5, 35.5, 35.5, 5);
-
-                encoderDrive(DRIVE_SPEED, 9, -9, -9, 9, 1); // Move right
-
-
-                sleep(500);
-                turnServo(1); // Down
-
-                sleep(500);
-                encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Backwards 
-
-                
-                encoderDrive(DRIVE_SPEED, -23, 23, 23, -23, 5); // Park
-                turnServo(-1); // 
+                 encoderDrive((DRIVE_SPEED * 0.5), -3, -3, -3, -3, 2); // Back Up
+                 encoderDrive(DRIVE_SPEED, -30, 30, 30, -30, 12); // Park (Left Corner)
+                 turnServo(-1); // Rotates "Jesus" back to original position
 
 
 

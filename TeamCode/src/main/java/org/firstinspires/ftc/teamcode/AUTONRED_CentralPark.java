@@ -227,7 +227,7 @@
  
             sleep(1000);
 
-             encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 5); // Back Up
+             encoderDrive((DRIVE_SPEED * 0.5), -3, -3, -3, -3, 5); // Back Up
  
              encoderDrive(DRIVE_SPEED, -20, 20, 20, -20, 5); // Move left and park
              turnServo(-1); // Rotates "Jesus" back to original position
@@ -277,7 +277,7 @@
  
                  sleep(500);
 
-                 encoderDrive(DRIVE_SPEED, -3, -3, -3, -3, 2); // Back Up
+                 encoderDrive((DRIVE_SPEED * 0.5), -3, -3, -3, -3, 2); // Back Up
                  encoderDrive(DRIVE_SPEED, -12, 12, 12, -12, 12); // Park (Right Corner)
                  turnServo(-1); // Rotates "Jesus" back to original position
 
