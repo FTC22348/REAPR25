@@ -220,8 +220,9 @@ public class AUTONBLUE_States extends LinearOpMode {
             rotate(90, TURN_SPEED);
             sleep(800);
 
-            encoderDrive(DRIVE_SPEED, 12.5, 12.5, 12.5, 12.5, 5); // Forward
+            encoderDrive(DRIVE_SPEED, 13.5, 13.5, 13.5, 13.5, 5); // Forward
 
+            sleep(500);
             turnServo(1);
             sleep(500);
             encoderDrive((DRIVE_SPEED * 0.5), -3, -3, -3, -3, 5); // Back Up
@@ -245,16 +246,16 @@ public class AUTONBLUE_States extends LinearOpMode {
 
                 encoderDrive(DRIVE_SPEED, 22, 22, 22, 22, 5);
                 sleep(800);
-                rotate(90, TURN_SPEED);
+                rotate(87, TURN_SPEED);
                 sleep(500);
                 encoderDrive(DRIVE_SPEED, 8, 8, 8, 8, 5); // Forwads before rotate
                 rotateRamp();
                 sleep(800);
                 encoderDrive(DRIVE_SPEED, 16, 16, 16, 16, 5); // Move forward
                 sleep(500);
-                encoderDrive(DRIVE_SPEED, -11, 11, 11, -11, 5); // Move left
+                encoderDrive(DRIVE_SPEED, -10.5, 10.5, 10.5, -10.5, 5); // Move left
                 sleep(500);
-                encoderDrive(DRIVE_SPEED, 1.5, 1.5, 1.5, 1.5, 2); // Forward
+                encoderDrive(DRIVE_SPEED, 2, 2, 2, 2, 2); // Forward
 
 
                 turnServo(1);
@@ -273,15 +274,17 @@ public class AUTONBLUE_States extends LinearOpMode {
                  sleep(500);
                  encoderDrive(DRIVE_SPEED, 21, -21, -21, 21, 3); // Strafe to right before backing
                  sleep(500);
-                 encoderDrive(DRIVE_SPEED, -12, -12, -12, -12, 2); // Back Up
+                 encoderDrive(DRIVE_SPEED, -11, -11, -11, -11, 2); // Back Up
                  rotateRamp(); // Arm up and ramp moves 
                  encoderDrive(DRIVE_SPEED, 30, 30, 30, 30, 3); // Move Forward
                  sleep(500);
                  encoderDrive(DRIVE_SPEED, 7, -7, -7, 7, 2); // Strafe to right before rotating "Jesus"
-                 encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 2); // Move Forward
+                 encoderDrive(DRIVE_SPEED, 6, 6, 6, 6, 2); // Move Forward
+                 sleep(500);
                  turnServo(1); // Rotates "Jesus" up to drop yellow pixel on backdrop
  
                  sleep(500);
+                 turnServo(-1);
 
                  encoderDrive((DRIVE_SPEED * 0.5), -3, -3, -3, -3, 2); // Back Up
                  encoderDrive(DRIVE_SPEED, -30, 30, 30, -30, 12); // Park (Left Corner)
@@ -540,7 +543,7 @@ public class AUTONBLUE_States extends LinearOpMode {
     public void turnServo(double servoPosition) {
         //autonServo.setPosition(Range.clip(servoPosition, MIN_POSITION, MAX_POSITION));
         if(servoPosition==1){
-            autonServo.setPower(-0.4);
+            autonServo.setPower(-0.3);
             sleep(2500);
             autonServo.setPower(0);
         }else{
