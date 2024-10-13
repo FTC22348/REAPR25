@@ -416,15 +416,15 @@ public class Reapr_Auton24 extends LinearOpMode {
     private void initTfod() {
 
         // Create the TensorFlow processor by using a builder.
-        tfod = new TfodProcessor.Builder()
+        tfod = new TfodProcessor.Builder();
 
         //.setModelAssetName(TFOD_MODEL_ASSET)
-        tfod.setModelFileName(TFOD_MODEL_FILE)
-        tfod.setModelLabels(LABELS)
-        tfod.setIsModelTensorFlow2(true)
-        tfod.setIsModelQuantized(true)
-        tfod.setModelInputSize(300)
-        tfod.setModelAspectRatio(16.0 / 9.0)
+        tfod.setModelFileName(TFOD_MODEL_FILE);
+        tfod.setModelLabels(LABELS);
+        tfod.setIsModelTensorFlow2(true);
+        tfod.setIsModelQuantized(true);
+        tfod.setModelInputSize(300);
+        tfod.setModelAspectRatio(16.0 / 9.0);
 
         tfod.build();
 
