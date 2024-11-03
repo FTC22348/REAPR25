@@ -69,7 +69,8 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
 //        CRServo ramp = hardwareMap.crservo.get("ramp");
 //        CRServo autonServo = hardwareMap.crservo.get("autonDropServo");
 //
-//        Servo hinge = hardwareMap.servo.get("hinge");
+       Servo claw = hardwareMap.servo.get("claw");
+       CRServo arm = hardwareMap.crservo.get("arm");
 //
 //        //DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
 //
@@ -93,7 +94,7 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
 //
 //        hingePosition = 0.1;
 //
-//        if (isStopRequested()) return;
+       if (isStopRequested()) return;
 //
         boolean isSlowMode = false;
         double dividePower = 1.0;
