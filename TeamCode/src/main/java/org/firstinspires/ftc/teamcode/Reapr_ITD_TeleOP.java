@@ -63,13 +63,13 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         //motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);  // This was connected on the expansion hub, it needs to be reversed
 //
 //        DcMotor wormGear = hardwareMap.dcMotor.get("wormGear"); // Port 0
-//        DcMotor muscle = hardwareMap.dcMotor.get("muscle"); // Port 3
 //        // DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0 (intake is a servo now)
 //        CRServo intake = hardwareMap.crservo.get("intake");
 //        CRServo ramp = hardwareMap.crservo.get("ramp");
 //        CRServo autonServo = hardwareMap.crservo.get("autonDropServo");
 //
        Servo claw = hardwareMap.servo.get("claw");
+       DcMotor muscle = hardwareMap.dcMotor.get("muscle");
        CRServo arm = hardwareMap.crservo.get("arm");
 //
 //        //DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
