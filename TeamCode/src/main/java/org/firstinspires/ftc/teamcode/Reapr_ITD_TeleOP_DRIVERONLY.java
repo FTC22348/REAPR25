@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "TeleOP")
+@TeleOp(name = "TeleOP - Driver Only")
 
 public class Reapr_ITD_TeleOP extends LinearOpMode {
     //    double hingePosition;
