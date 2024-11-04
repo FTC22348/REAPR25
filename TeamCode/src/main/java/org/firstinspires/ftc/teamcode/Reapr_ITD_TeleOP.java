@@ -68,10 +68,10 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
 //        CRServo ramp = hardwareMap.crservo.get("ramp");
 //        CRServo autonServo = hardwareMap.crservo.get("autonDropServo");
 //
-       Servo claw = hardwareMap.servo.get("claw");
-       DcMotor muscle = hardwareMap.dcMotor.get("muscle");
+       //Servo claw = hardwareMap.servo.get("claw");
+       //DcMotor muscle = hardwareMap.dcMotor.get("muscle");
        DcMotor slide = hardwareMap.dcMotor.get("slide");
-       CRServo arm = hardwareMap.crservo.get("arm");
+       //CRServo arm = hardwareMap.crservo.get("arm");
 //
 //        //DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
 //
@@ -143,11 +143,11 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
 
             
             // arm control stuff
-            double g2ly = -gamepad2.left_stick_y; // Remember, this is reversed!
+            double g2ly = gamepad2.left_stick_y;
             double g2lx =  gamepad2.left_stick_x * 1.1; // Counteract imperfect strafing
             double g2rx = gamepad2.right_stick_x;
             
-            slide.setPower(g2ly);         
+            slide.setPower(g2ly / dividePower);         
         }
     }
 }
