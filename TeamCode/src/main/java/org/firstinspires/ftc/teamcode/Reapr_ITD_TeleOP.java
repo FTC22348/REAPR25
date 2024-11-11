@@ -43,6 +43,7 @@ import com.qualcomm.robotcore.util.Range;
 
 public class Reapr_ITD_TeleOP extends LinearOpMode {
     //    double hingePosition;
+    double clawPosition;
     double MIN_POSITION = 0, MAX_POSITION = 1;
 
     @Override
@@ -60,50 +61,29 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         // Reverse left motors if you are using NeveRests
         motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        //motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);  // This was connected on the expansion hub, it needs to be reversed
-//
-//        DcMotor wormGear = hardwareMap.dcMotor.get("wormGear"); // Port 0
-//        // DcMotor spinner = hardwareMap.dcMotor.get("spinnerMotor"); // Port 0 (intake is a servo now)
-//        CRServo intake = hardwareMap.crservo.get("intake");
-//        CRServo ramp = hardwareMap.crservo.get("ramp");
-//        CRServo autonServo = hardwareMap.crservo.get("autonDropServo");
-//
-       //Servo claw = hardwareMap.servo.get("claw");
-       //DcMotor muscle = hardwareMap.dcMotor.get("muscle");
+        
+        // Claw Motors (Servo)
+        Servo claw = hardwareMap.servo.get("claw");// name of servo on control hub is claw
+        CRServo arm = hardwareMap.crservo.get("arm");// name of servo on control hub is arm
+        // On port:
+        
+        //final double clawSpeed = 0.05;// change to 100th when button is hold
+        //final double clawMinRange = 0.0;
+        //final double clawMaxRange = 0.55;
+        
        DcMotor slide = hardwareMap.dcMotor.get("slide");
-       //CRServo arm = hardwareMap.crservo.get("arm");
-//
-//        //DcMotor spool = hardwareMap.dcMotor.get("spool"); // Port 3
-//
-//        // Airplane launcher setup
-//        CRServo launcher = hardwareMap.crservo.get("launcher");
-//        CRServo bucketArm = hardwareMap.crservo.get("bucketArm");
-//        CRServo bucket = hardwareMap.crservo.get("bucket");
-//
-//
-//        /*
-//        double launcherPosition = 0.5;
-//        final double launcherSpeed = 0.1;// change to 100th when button is hold
-//        final double launcherMinRange = 0.3;
-//        final double launcherMaxRange = 0.55;
-//        */
-//
-//        // Rack and pinion setup
-//
-//
+       
         waitForStart();
-//
-//        hingePosition = 0.1;
-//
+        
+        clawPosition = 0.1;
+
        if (isStopRequested()) return;
-//
+
         boolean isSlowMode = false;
         double dividePower = 1.0;
-//
-//        int currentPosition = 0;
-//
+
         boolean keepMoving = false;
-//
+
         while (opModeIsActive()) {
             //! Control Speed
             if (isSlowMode) {
@@ -147,7 +127,38 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
             double g2lx =  gamepad2.left_stick_x * 1.1; // Counteract imperfect strafing
             double g2rx = gamepad2.right_stick_x;
             
-            slide.setPower(g2ly / dividePower);         
+            slide.setPower(g2ly / dividePower);
+            
+            
+            // claw
+
+            // move claw open on y if not already at lowest position.
+            if (gamepad2.y){   
+                clawPosition = 0;
+                claw.setPosition(clawPosition);
+            }
+
+            // move claw closed on a if not already at the highest position.
+            if (gamepad2.a){
+                //clawPosition += .01;
+                //telemetry.addData("a pressed", "%.2f", clawPosition, "%.2f", MIN_POSITION, "%.2f", MAX_POSITION);
+               // telemetry.update();
+                clawPosition = 1;
+                // claw.setPosition(Range.clip(clawPosition, MIN_POSITION, MAX_POSITION));
+                claw.setPosition(clawPosition);
+            } 
+
+            telemetry.addData("claw postion ", "%.2f", clawPosition); //displays the values on the driver hub
+            telemetry.update();
+        
+            if (gamepad2.x) {
+                arm.setPower(1);
+            } else if (gamepad2.b) {
+                arm.setPower(-1);
+            } else {
+                arm.setPower(0); // Ensure arm stops when buttons are not pressed
+            } 
+          
         }
     }
 }
