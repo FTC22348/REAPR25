@@ -10,9 +10,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+// import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+// import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+// import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import java.util.List;
 
@@ -90,7 +90,7 @@ public class Reapr_Failsafe extends LinearOpMode {
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path0",  "Starting at %7d :%7d",
+        telemetry.addData("Path 123",  "Starting at %7d :%7d",
                 motorFrontLeft.getCurrentPosition(),
                 motorFrontRight.getCurrentPosition(),
                 motorBackLeft.getCurrentPosition(),
@@ -99,19 +99,22 @@ public class Reapr_Failsafe extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
+        sleep(1000);
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
 
         // Forward
+        telemetry.addData("Drive Speed:", "%,.2f", DRIVE_SPEED);
+        telemetry.update();
+        
         encoderDrive(DRIVE_SPEED,  -22,  -22, -22, -22, 200.0);  // 200 second timeout, no need for it yet
         // Strafing Left (but for right because its backwards)
-        //encoderDrive(DRIVE_SPEED,  20,  -20, -20, 20, 200.0);  // 200 second timeout, no need for it yet
+        encoderDrive(DRIVE_SPEED,  20,  -20, -20, 20, 200.0);  // 200 second timeout, no need for it yet
         // Forward Again
-        //encoderDrive(DRIVE_SPEED,  -8,  -8, -8, -8, 200.0);  // 200 second timeout, no need for it yet
+        encoderDrive(DRIVE_SPEED,  -8,  -8, -8, -8, 200.0);  // 200 second timeout, no need for it yet
 
         // Rotate
-        //encoderDrive(TURN_SPEED, 24, -24, 24, -24, 200.0);
+        encoderDrive(TURN_SPEED, 24, -24, 24, -24, 200.0);
 
         // Add manual servo code with
         telemetry.addData("Path", "Complete");
@@ -128,7 +131,7 @@ public class Reapr_Failsafe extends LinearOpMode {
      */
 
     public void encoderDrive(double speed, double leftInches, double rightInches, double leftBackInches, double rightBackInches, double timeoutS) {
-
+    
         int newLeftTarget;
         int newRightTarget;
         int newLeftBackTarget;
@@ -181,14 +184,14 @@ public class Reapr_Failsafe extends LinearOpMode {
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
-                    (runtime.seconds() < timeoutS) &&
-                    (motorFrontLeft.isBusy() && motorFrontRight.isBusy())) {
+                   (runtime.seconds() < timeoutS) &&
+                   (motorFrontLeft.isBusy() && motorFrontRight.isBusy())) {
 
                 // Display it for the driver.
                 telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
                 telemetry.addData("Path2",  "Running at %7d :%7d",
-                        motorFrontLeft.getCurrentPosition(),
-                        motorFrontRight.getCurrentPosition());
+                                            motorFrontLeft.getCurrentPosition(),
+                                            motorFrontRight.getCurrentPosition());
                 telemetry.update();
             }
 
