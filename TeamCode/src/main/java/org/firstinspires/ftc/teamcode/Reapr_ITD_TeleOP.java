@@ -43,7 +43,7 @@ import com.qualcomm.robotcore.util.Range;
 
 public class Reapr_ITD_TeleOP extends LinearOpMode {
     //    double hingePosition;
-    double clawPosition;
+    double clawPosition, armPosition;
     double MIN_POSITION = 0, MAX_POSITION = 1;
 
     @Override
@@ -64,7 +64,7 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         
         // Claw Motors (Servo)
         Servo claw = hardwareMap.servo.get("claw");// name of servo on control hub is claw
-        CRServo arm = hardwareMap.crservo.get("arm");// name of servo on control hub is arm
+        Servo arm = hardwareMap.servo.get("arm");// name of servo on control hub is arm
         // On port:
         
         //final double clawSpeed = 0.05;// change to 100th when button is hold
@@ -152,12 +152,15 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
             telemetry.update();
         
             if (gamepad2.x) {
-                arm.setPower(1);
+                // arm.setPower(1);
+                armPosition = 1;
             } else if (gamepad2.b) {
-                arm.setPower(-1);
-            } else {
-                arm.setPower(0); // Ensure arm stops when buttons are not pressed
-            } 
+                // arm.setPower(-1);
+                armPosition = 0;
+               } //else {
+            //     // arm.setPower(0); // Ensure arm stops when buttons are not pressed
+            //     armPosition = 0;
+            // } 
           
         }
     }
