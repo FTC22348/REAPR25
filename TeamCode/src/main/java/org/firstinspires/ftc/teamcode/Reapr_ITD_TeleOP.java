@@ -64,7 +64,7 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         
         // Claw Motors (Servo)
         Servo claw = hardwareMap.servo.get("claw");// name of servo on control hub is claw
-        Servo arm = hardwareMap.servo.get("arm");// name of servo on control hub is arm
+        CRServo arm = hardwareMap.crservo.get("arm");// name of servo on control hub is arm
         // On port:
         
         //final double clawSpeed = 0.05;// change to 100th when button is hold
@@ -76,6 +76,7 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         waitForStart();
         
         clawPosition = 0.1;
+        armPosition=0;
 
        if (isStopRequested()) return;
 
@@ -152,13 +153,15 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
             telemetry.update();
         
             if (gamepad2.x) {
-                // arm.setPower(1);
-                armPosition = 1;
+                arm.setPower(1);
+                // armPosition = 0.5;
+                // arm.setPosition(armPosition);
             } else if (gamepad2.b) {
-                // arm.setPower(-1);
-                armPosition = 0;
+                arm.setPower(-1);
+                // armPosition = 0;
+                // arm.setPosition(armPosition);
                } //else {
-            //     // arm.setPower(0); // Ensure arm stops when buttons are not pressed
+                arm.setPower(0); // Ensure arm stops when buttons are not pressed
             //     armPosition = 0;
             // } 
           

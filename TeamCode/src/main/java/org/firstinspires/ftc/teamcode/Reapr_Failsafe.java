@@ -50,6 +50,9 @@ public class Reapr_Failsafe extends LinearOpMode {
     private DcMotor motorBackLeft = null;
     private DcMotor motorFrontRight = null;
     private DcMotor motorBackRight = null;
+    
+    Servo claw;
+    Servo arm;
 
     /* Declare OpMode members. */
     private ElapsedTime     runtime = new ElapsedTime();
@@ -61,6 +64,8 @@ public class Reapr_Failsafe extends LinearOpMode {
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.6;
     static final double     TURN_SPEED              = 0.5;
+    double clawPosition, armPosition;
+    double MIN_POSITION = 0, MAX_POSITION = 1;
 
     @Override
     public void runOpMode() {
@@ -70,7 +75,9 @@ public class Reapr_Failsafe extends LinearOpMode {
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
 
-
+        // Claw Motors (Servo)
+        claw = hardwareMap.servo.get("claw");// name of servo on control hub is claw
+        arm = hardwareMap.servo.get("arm");// name of servo on control hub is arm
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -100,6 +107,7 @@ public class Reapr_Failsafe extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         sleep(1000);
+
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
 
@@ -209,5 +217,16 @@ public class Reapr_Failsafe extends LinearOpMode {
 
             //  sleep(250);   // optional pause after each move
         }
+
+    } // end of encoder function
+    
+    public void claw(double pos) {
+        clawPosition = pos;
+        claw.setPosition(clawPosition);
+    }
+
+    public void arm(double pos) {
+        armPosition = pos;
+        arm.setPosition(armPosition);
     }
 }
