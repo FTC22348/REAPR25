@@ -113,7 +113,7 @@ public class Reapr_Failsafe extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        sleep(1000);
+        sleep(8000);
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
