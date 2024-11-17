@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -51,8 +52,10 @@ public class Reapr_Failsafe extends LinearOpMode {
     private DcMotor motorFrontRight = null;
     private DcMotor motorBackRight = null;
     
+    private DcMotor slide = null;
+    
     Servo claw;
-    Servo arm;
+    CRServo arm;
 
     /* Declare OpMode members. */
     private ElapsedTime     runtime = new ElapsedTime();
@@ -74,10 +77,14 @@ public class Reapr_Failsafe extends LinearOpMode {
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
+        
+        DcMotor slide = hardwareMap.dcMotor.get("slide");
+
+        
 
         // Claw Motors (Servo)
         claw = hardwareMap.servo.get("claw");// name of servo on control hub is claw
-        arm = hardwareMap.servo.get("arm");// name of servo on control hub is arm
+        arm = hardwareMap.crservo.get("arm");// name of servo on control hub is arm
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -115,14 +122,41 @@ public class Reapr_Failsafe extends LinearOpMode {
         telemetry.addData("Drive Speed:", "%,.2f", DRIVE_SPEED);
         telemetry.update();
         
-        encoderDrive(DRIVE_SPEED,  -22,  -22, -22, -22, 200.0);  // 200 second timeout, no need for it yet
+        
+        claw(0);
+        
+        // FORWARD IS DIRECTION OF THE CLAW
+        
+        encoderDrive(DRIVE_SPEED,  -5,  -5, -5, -5, 200.0);  // Forward 5
+        encoderDrive(DRIVE_SPEED,  42,  -42, -42, 42, 200.0);   // LEFT
+        
         // Strafing Left (but for right because its backwards)
-        encoderDrive(DRIVE_SPEED,  20,  -20, -20, 20, 200.0);  // 200 second timeout, no need for it yet
+        // encoderDrive(DRIVE_SPEED,  20,  -20, -20, 20, 200.0);  // 200 second timeout, no need for it yet
         // Forward Again
-        encoderDrive(DRIVE_SPEED,  -8,  -8, -8, -8, 200.0);  // 200 second timeout, no need for it yet
+        // encoderDrive(DRIVE_SPEED,  -8,  -8, -8, -8, 200.0);  // 200 second timeout, no need for it yet
 
-        // Rotate
-        encoderDrive(TURN_SPEED, 24, -24, 24, -24, 200.0);
+        encoderDrive(TURN_SPEED, 8, -8, 8, -8, 200.0); // Rotate
+        
+        encoderDrive(DRIVE_SPEED,  17,  -17, -17, 17, 200.0);   // LEFT towards bucket
+
+        encoderDrive(DRIVE_SPEED,  7,  7, 7, 7, 200.0);  // Back 7 towards bucket
+
+        //moveSlide(3000);
+        
+        
+        // MOVE SLIDE
+        slide.setPower(-1);
+        sleep(1500);
+        slide.setPower(0);
+
+        // arm
+        arm.setPower(0.25);
+        sleep(2000);
+
+        // claw
+        claw.setPosition(1);
+        sleep(2000);
+        
 
         // Add manual servo code with
         telemetry.addData("Path", "Complete");
@@ -150,6 +184,9 @@ public class Reapr_Failsafe extends LinearOpMode {
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
+        
+        DcMotor slide = hardwareMap.dcMotor.get("slide");
+
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -227,6 +264,12 @@ public class Reapr_Failsafe extends LinearOpMode {
 
     public void arm(double pos) {
         armPosition = pos;
-        arm.setPosition(armPosition);
+        //arm.setPosition(armPosition);
+    }
+    
+    public void moveSlide(int time){
+        slide.setPower(0.5);
+        sleep(time);
+        slide.setPower(0);
     }
 }
