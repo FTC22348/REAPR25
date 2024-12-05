@@ -116,13 +116,9 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
             motorFrontRight.setPower(frontRightPower);
             motorBackRight.setPower(backRightPower);
 
-            
             // arm control stuff            
             slide.setPower(gamepad2.left_stick_y / dividePower);
             
-            
-            // claw
-
             // move claw open on y if not already at lowest position.
             if (gamepad2.y){   
                 clawPosition = 0;
@@ -144,7 +140,6 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
                 arm.setPower(-1);
             }
             arm.setPower(0);
-          
         }
     }
 }
