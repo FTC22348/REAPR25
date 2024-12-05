@@ -1,33 +1,5 @@
 /* Base code from:
 https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html
-
-Main TeleOP (2 Driver)
-
-Ports:
-Motors:
-- Spinner Motor - Control 0
-- Front Left Wheel - Control 1
-- Back Left Wheel - Control 2
-- Muscle - Control 3
-- Worm Gear - Expansion 0
-- Front Right Wheel - Expansion 1
-- Back Right Wheel - Expansion 2
-- Spool - Expansion 3 (not using anymore)
-
-Servos: 
-- none - Control 0
-- Intake - Control 1
-- Ramp - Control 2
-- Drone Launcher - Control 3
-- Hinge - Control 4
-- Auton Servo - Control 5
-- Arm - Expansion 0
-- none - Expansion 1
-- none - Expansion 2
-- Bucket - Expansion 3
-- none - Expansion 4
-- none - Expansion 5
-- 
 */
 
 package org.firstinspires.ftc.teamcode;
@@ -37,13 +9,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name = "TeleOP")
 
 public class Reapr_ITD_TeleOP extends LinearOpMode {
-    double clawPosition, armPosition;
-    double MIN_POSITION = 0, MAX_POSITION = 1;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -61,23 +30,18 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         
-        // Claw Motors (Servo)
+        // Claw Control
         Servo claw = hardwareMap.get(Servo.class, "claw");
         CRServo arm = hardwareMap.get(CRServo.class, "arm");
         DcMotor slide = hardwareMap.get(DcMotor.class, "slide");
         
        
         waitForStart();
-        
-        clawPosition = 0.1;
-        armPosition = 0;
 
        if (isStopRequested()) return;
 
         boolean isSlowMode = false;
         double dividePower = 1.0;
-
-        boolean keepMoving = false;
 
         while (opModeIsActive()) {
             //! Control Speed
@@ -106,33 +70,23 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
             // This ensures all the powers maintain the same ratio, but only when
             // at least one is out of the range [-1, 1]
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            double frontLeftPower = (y + x + rx) / denominator / dividePower; //Positive rotation results in forward & right motion
-            double backLeftPower = (y - x + rx) / denominator / dividePower; //Positive rotation results in forward & left motion
-            double frontRightPower = (y - x - rx) / denominator / dividePower; //Positive rotation results in forward & left motion
-            double backRightPower = (y + x - rx) / denominator / dividePower; //Positive rotation results in forward & right motion
-
-            motorFrontLeft.setPower(frontLeftPower);
-            motorBackLeft.setPower(backLeftPower);
-            motorFrontRight.setPower(frontRightPower);
-            motorBackRight.setPower(backRightPower);
+            motorFrontLeft.setPower((y + x + rx) / denominator / dividePower);//Positive rotation results in forward & right motion
+            motorBackLeft.setPower((y - x + rx) / denominator / dividePower);//Positive rotation results in forward & left motion
+            motorFrontRight.setPower((y - x - rx) / denominator / dividePower);//Positive rotation results in forward & left motion
+            motorBackRight.setPower((y + x - rx) / denominator / dividePower);//Positive rotation results in forward & right motion
 
             // arm control stuff            
             slide.setPower(gamepad2.left_stick_y / dividePower);
             
             // move claw open on y if not already at lowest position.
-            if (gamepad2.y){   
-                clawPosition = 0;
-                claw.setPosition(clawPosition);
+            if (gamepad2.y){
+                claw.setPosition(0);
             }
 
             // move claw closed on a if not already at the highest position.
             if (gamepad2.a){
-                clawPosition = 1;
-                claw.setPosition(clawPosition);
-            } 
-
-            telemetry.addData("claw postion ", "%.2f", clawPosition); //displays the values on the driver hub
-            telemetry.update();
+                claw.setPosition(1);
+            }
         
             if (gamepad2.x) {
                 arm.setPower(1);
