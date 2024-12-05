@@ -42,7 +42,6 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name = "TeleOP")
 
 public class Reapr_ITD_TeleOP extends LinearOpMode {
-    //    double hingePosition;
     double clawPosition, armPosition;
     double MIN_POSITION = 0, MAX_POSITION = 1;
 
@@ -52,10 +51,10 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         // Make sure your ID's match your configuration
 
         // Meccanum Drivetrain
-        DcMotor motorFrontLeft = hardwareMap.dcMotor.get("motorFrontLeft");
-        DcMotor motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
-        DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
-        DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
+        DcMotor motorFrontLeft = hardwareMap.get(DcMotor.class, "motorFrontLeft");
+        DcMotor motorBackLeft = hardwareMap.get(DcMotor.class, "motorBackLeft");
+        DcMotor motorFrontRight = hardwareMap.get(DcMotor.class, "motorFrontRight");
+        DcMotor motorBackRight = hardwareMap.get(DcMotor.class, "motorBackRight");
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -63,20 +62,15 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         
         // Claw Motors (Servo)
-        Servo claw = hardwareMap.servo.get("claw");// name of servo on control hub is claw
-        CRServo arm = hardwareMap.crservo.get("arm");// name of servo on control hub is arm
-        // On port:
+        Servo claw = hardwareMap.get(Servo.class, "claw");
+        CRServo arm = hardwareMap.get(CRServo.class, "arm");
+        DcMotor slide = hardwareMap.get(DcMotor.class, "slide");
         
-        //final double clawSpeed = 0.05;// change to 100th when button is hold
-        //final double clawMinRange = 0.0;
-        //final double clawMaxRange = 0.55;
-        
-       DcMotor slide = hardwareMap.dcMotor.get("slide");
        
         waitForStart();
         
         clawPosition = 0.1;
-        armPosition=0;
+        armPosition = 0;
 
        if (isStopRequested()) return;
 
@@ -123,12 +117,8 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
             motorBackRight.setPower(backRightPower);
 
             
-            // arm control stuff
-            double g2ly = gamepad2.left_stick_y;
-            double g2lx =  gamepad2.left_stick_x * 1.1; // Counteract imperfect strafing
-            double g2rx = gamepad2.right_stick_x;
-            
-            slide.setPower(g2ly / dividePower);
+            // arm control stuff            
+            slide.setPower(gamepad2.left_stick_y / dividePower);
             
             
             // claw
@@ -141,11 +131,7 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
 
             // move claw closed on a if not already at the highest position.
             if (gamepad2.a){
-                //clawPosition += .01;
-                //telemetry.addData("a pressed", "%.2f", clawPosition, "%.2f", MIN_POSITION, "%.2f", MAX_POSITION);
-               // telemetry.update();
                 clawPosition = 1;
-                // claw.setPosition(Range.clip(clawPosition, MIN_POSITION, MAX_POSITION));
                 claw.setPosition(clawPosition);
             } 
 
@@ -154,16 +140,10 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         
             if (gamepad2.x) {
                 arm.setPower(1);
-                // armPosition = 0.5;
-                // arm.setPosition(armPosition);
             } else if (gamepad2.b) {
                 arm.setPower(-1);
-                // armPosition = 0;
-                // arm.setPosition(armPosition);
-               } //else {
-                arm.setPower(0); // Ensure arm stops when buttons are not pressed
-            //     armPosition = 0;
-            // } 
+            }
+            arm.setPower(0);
           
         }
     }
