@@ -1,71 +1,29 @@
-package org.firstinspires.ftc.teamcode.auto;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
+package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-// import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-// import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-// import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-
-import java.util.List;
-
-/*
- * This file illustrates the concept of driving a path based on encoder counts.
- * It uses the common Pushbot hardware class to define the drive on the robot.
- * The code is structured as a LinearOpMode
- *
- * The code REQUIRES that you DO have encoders on the wheels,
- *   otherwise you would use: PushbotAutoDriveByTime;
- *
- *  This code ALSO requires that the drive Motors have been configured such that a positive
- *  power command moves them forwards, and causes the encoders to count UP.
- *
- *   The desired path in this example is:
- *   - Drive forward for 48 inches
- *   - Spin right for 12 Inches
- *   - Drive Backwards for 24 inches
- *   - Stop and close the claw.
- *
- *  The code is written using a method called: encoderDrive(speed, leftInches, rightInches, timeoutS)
- *  that performs the actual movement.
- *  This methods assumes that each movement is relative to the last stopping place.
- *  There are other ways to perform encoder based moves, but this method is probably the simplest.
- *  This code uses the RUN_TO_POSITION mode to enable the Motor controllers to generate the run profile
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Autonomous(name="Left")
-
 public class Reapr_Left extends LinearOpMode {
     private DcMotor motorFrontLeft = null; //Declares stuff ON ROBOT
     private DcMotor motorBackLeft = null;
     private DcMotor motorFrontRight = null;
     private DcMotor motorBackRight = null;
-    
     private DcMotor slide = null;
-    
-    Servo claw;
-    CRServo arm;
+    private Servo claw = null;
+    private CRServo arm = null;
 
     /* Declare OpMode members. */
     private ElapsedTime     runtime = new ElapsedTime();
-
     static final double     COUNTS_PER_MOTOR_REV    = 840 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 0.6;
+    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
+    static final double     DRIVE_SPEED             = 1;
     static final double     TURN_SPEED              = 0.5;
     double clawPosition, armPosition;
     double MIN_POSITION = 0, MAX_POSITION = 1;
@@ -73,29 +31,19 @@ public class Reapr_Left extends LinearOpMode {
     @Override
     public void runOpMode() {
         // Meccanum Drivetrain
-        DcMotor motorFrontLeft = hardwareMap.dcMotor.get("motorFrontLeft");
-        DcMotor motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
-        DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
-        DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
-        
-        DcMotor slide = hardwareMap.dcMotor.get("slide");
+        DcMotor motorFrontLeft = hardwareMap.get(DcMotor.class, "motorFrontLeft");
+        DcMotor motorBackLeft = hardwareMap.get(DcMotor.class, "motorBackLeft");
+        DcMotor motorFrontRight = hardwareMap.get(DcMotor.class, "motorFrontRight");
+        DcMotor motorBackRight = hardwareMap.get(DcMotor.class, "motorBackRight");
 
-        
-
-        // Claw Motors (Servo)
-        claw = hardwareMap.servo.get("claw");// name of servo on control hub is claw
-        arm = hardwareMap.crservo.get("arm");// name of servo on control hub is arm
-
-        // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
         motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        //motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);  // This was connected on the expansion hub, it needs to be reversed
-
-
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Resetting Encoders");    //
-        telemetry.update();
+        
+        // Claw Control
+        Servo claw = hardwareMap.get(Servo.class, "claw");
+        CRServo arm = hardwareMap.get(CRServo.class, "arm");
+        DcMotor slide = hardwareMap.get(DcMotor.class, "slide");
 
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -103,21 +51,44 @@ public class Reapr_Left extends LinearOpMode {
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path 123",  "Starting at %7d :%7d",
-                motorFrontLeft.getCurrentPosition(),
-                motorFrontRight.getCurrentPosition(),
-                motorBackLeft.getCurrentPosition(),
-                motorBackRight.getCurrentPosition());
-        telemetry.update();
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        sleep(8000);
 
-        encoderDrive(DRIVE_SPEED,  42,  -42, -42, 42, 200.0);   // LEFT
+        encoderDrive(DRIVE_SPEED,  -10,  -10, -10, -10, 200.0);   // STRAIGHT
+        encoderDrive(DRIVE_SPEED,  20,  -20, -20, 20, 200.0);   // LEFT
+        encoderDrive(DRIVE_SPEED, 8, -8, 8, -88, 200.0); //clockwise turn
+        encoderDrive(DRIVE_SPEED, 5, 5, 5, 5, 200.0); //go back
         
-       
+        //slide goes up
+        slide.setPower(-1);
+        sleep(3000);
+        slide.setPower(0);
+        
+        //arm goes over
+        arm.setPower(1);
+        sleep(3000);
+        
+        claw.setPosition(0.6); //open claw
+        sleep(2000);
+        
+        //arm goes back to front
+        arm.setPower(-0.5);
+        sleep(1000);
+        
+        //slide goes back down
+        slide.setPower(1);
+        sleep(3000);
+        slide.setPower(0);
+        
+        encoderDrive(DRIVE_SPEED, -8, 8, -8, 88, 200.0); //clockwise turn
+        encoderDrive(DRIVE_SPEED,  -15,  15, 15, -15, 200.0); //right a lil bit
+        encoderDrive(DRIVE_SPEED,  -30,  -30, -30, -30, 200.0); //straight
+        encoderDrive(DRIVE_SPEED, -16, 16, -16, 16, 200.0); //turn 90 degrees
+        encoderDrive(DRIVE_SPEED, 7, 7, 7, 7, 200.0); //move into ascent zone
+        
+        //grab the thing or whatever
+        arm.setPower(1);
+        sleep(3000);
     }
 
     /*
@@ -208,6 +179,5 @@ public class Reapr_Left extends LinearOpMode {
             motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-
     }
 }

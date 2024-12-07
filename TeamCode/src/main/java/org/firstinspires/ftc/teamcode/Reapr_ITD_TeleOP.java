@@ -1,29 +1,35 @@
 // Base code from https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html
 
 package org.firstinspires.ftc.teamcode;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
+import java.util.List;
 
 @TeleOp(name = "TeleOP")
-
 public class Reapr_ITD_TeleOP extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        // Declare our motors
-        // Make sure your ID's match your configuration
 
+        List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
+
+        for (LynxModule hub : allHubs) {
+            hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+        }
+
+        // Declare our motors
+        
         // Meccanum Drivetrain
         DcMotor motorFrontLeft = hardwareMap.get(DcMotor.class, "motorFrontLeft");
         DcMotor motorBackLeft = hardwareMap.get(DcMotor.class, "motorBackLeft");
         DcMotor motorFrontRight = hardwareMap.get(DcMotor.class, "motorFrontRight");
         DcMotor motorBackRight = hardwareMap.get(DcMotor.class, "motorBackRight");
 
-        // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
         motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -33,7 +39,6 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         CRServo arm = hardwareMap.get(CRServo.class, "arm");
         DcMotor slide = hardwareMap.get(DcMotor.class, "slide");
         
-       
         waitForStart();
 
        if (isStopRequested()) return;

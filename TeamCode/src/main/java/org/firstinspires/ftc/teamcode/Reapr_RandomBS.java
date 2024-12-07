@@ -16,8 +16,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 // import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import java.util.List;
 
-@Autonomous(name="TrueFailsafe")
-
+@Autonomous(name = "Right")
 public class Reapr_RandomBS extends LinearOpMode {
 private DcMotor motorFrontLeft = null; //Declares stuff ON ROBOT
     private DcMotor motorBackLeft = null;
@@ -45,25 +44,19 @@ private DcMotor motorFrontLeft = null; //Declares stuff ON ROBOT
     @Override
     public void runOpMode() {
         // Meccanum Drivetrain
-        DcMotor motorFrontLeft = hardwareMap.dcMotor.get("motorFrontLeft");
-        DcMotor motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
-        DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
-        DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
-        
-        DcMotor slide = hardwareMap.dcMotor.get("slide");
+        DcMotor motorFrontLeft = hardwareMap.get(DcMotor.class, "motorFrontLeft");
+        DcMotor motorBackLeft = hardwareMap.get(DcMotor.class, "motorBackLeft");
+        DcMotor motorFrontRight = hardwareMap.get(DcMotor.class, "motorFrontRight");
+        DcMotor motorBackRight = hardwareMap.get(DcMotor.class, "motorBackRight");
 
-        
-
-        // Claw Motors (Servo)
-        claw = hardwareMap.servo.get("claw");// name of servo on control hub is claw
-        arm = hardwareMap.crservo.get("arm");// name of servo on control hub is arm
-
-        // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
         motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        //motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);  // This was connected on the expansion hub, it needs to be reversed
-
+        
+        // Claw Control
+        Servo claw = hardwareMap.get(Servo.class, "claw");
+        CRServo arm = hardwareMap.get(CRServo.class, "arm");
+        DcMotor slide = hardwareMap.get(DcMotor.class, "slide");
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");    //
@@ -71,21 +64,11 @@ private DcMotor motorFrontLeft = null; //Declares stuff ON ROBOT
 
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path 123",  "Starting at %7d :%7d",
-                motorFrontLeft.getCurrentPosition(),
-                motorFrontRight.getCurrentPosition(),
-                motorBackLeft.getCurrentPosition(),
-                motorBackRight.getCurrentPosition());
-        telemetry.update();
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        //sleep(8000);
 
         encoderDrive(1, 10, 10, -10, -10, 10);
         //no negatives is forwards
