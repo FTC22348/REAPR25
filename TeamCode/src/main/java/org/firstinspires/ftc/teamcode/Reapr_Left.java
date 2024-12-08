@@ -19,14 +19,11 @@ public class Reapr_Left extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime     runtime = new ElapsedTime();
-    static final double     COUNTS_PER_MOTOR_REV    = 840 ;    // eg: TETRIX Motor Encoder
+    static final double     COUNTS_PER_MOTOR_REV    = (1 + (46.0 / 17.0)) * (1 + (46.0 / 11.0)) * 28 ;    // GoBilda 5202 Series 312 RPM Planetary Gear Motor
     static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+    static final double     WHEEL_DIAMETER_INCHES   = 3.78 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * Math.PI);
     static final double     DRIVE_SPEED             = 1;
-    static final double     TURN_SPEED              = 0.5;
-    double clawPosition, armPosition;
-    double MIN_POSITION = 0, MAX_POSITION = 1;
 
     @Override
     public void runOpMode() {
