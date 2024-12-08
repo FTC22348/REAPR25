@@ -10,33 +10,34 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 import java.util.List;
 
-@TeleOp(name = "TeleOP")
+@TeleOp(name = "TeleOP") // On the Driver Hub, when TeleOP is clicked, clicking "TeleOP" runs this program
 public class Reapr_ITD_TeleOP extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
 
+        // Lynx Module, to call both Control Hub and Expansion Hub, reducing the reaction time between yanking the joystick and the robot moving
         List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
 
         for (LynxModule hub : allHubs) {
-            hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+            hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO); // Sets the Caching Mode to AUTO, rather than OFF (default), which speeds up loop times.
         }
 
         // Declare our motors
         
         // Meccanum Drivetrain
-        DcMotor motorFrontLeft = hardwareMap.get(DcMotor.class, "motorFrontLeft");
-        DcMotor motorBackLeft = hardwareMap.get(DcMotor.class, "motorBackLeft");
-        DcMotor motorFrontRight = hardwareMap.get(DcMotor.class, "motorFrontRight");
-        DcMotor motorBackRight = hardwareMap.get(DcMotor.class, "motorBackRight");
+        DcMotor motorFrontLeft = hardwareMap.get(DcMotor.class, "motorFrontLeft"); // An alternative to  DcMotor motorFrontLeft = hardwareMap.dcMotor.get("motorFrontLeft");
+        DcMotor motorBackLeft = hardwareMap.get(DcMotor.class, "motorBackLeft"); // An alternative to  DcMotor motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
+        DcMotor motorFrontRight = hardwareMap.get(DcMotor.class, "motorFrontRight"); // An alternative to  DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
+        DcMotor motorBackRight = hardwareMap.get(DcMotor.class, "motorBackRight"); // An alternative to  DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
 
-        // Reverse left motors if you are using NeveRests
+        // Reverse left motors 
         motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         
         // Claw Control
-        Servo claw = hardwareMap.get(Servo.class, "claw");
-        CRServo arm = hardwareMap.get(CRServo.class, "arm");
+        Servo claw = hardwareMap.get(Servo.class, "claw"); 
+        CRServo arm = hardwareMap.get(CRServo.class, "arm"); 
         DcMotor slide = hardwareMap.get(DcMotor.class, "slide");
         
         waitForStart();
@@ -64,8 +65,8 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
                 }
             }
 
-            //! Mecccanum controls
-            double y = -gamepad1.left_stick_y; // Remember, this is reversed!
+            // Mecccanum controls
+            double y = -gamepad1.left_stick_y;       // Remember, this is reversed!
             double x =  gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x;
 
@@ -73,10 +74,10 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
             // This ensures all the powers maintain the same ratio, but only when
             // at least one is out of the range [-1, 1]
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            motorFrontLeft.setPower((y + x + rx) / denominator / dividePower);//Positive rotation results in forward & right motion
-            motorBackLeft.setPower((y - x + rx) / denominator / dividePower);//Positive rotation results in forward & left motion
-            motorFrontRight.setPower((y - x - rx) / denominator / dividePower);//Positive rotation results in forward & left motion
-            motorBackRight.setPower((y + x - rx) / denominator / dividePower);//Positive rotation results in forward & right motion
+            motorFrontLeft.setPower((y + x + rx) / denominator / dividePower);  //Positive rotation results in forward & right motion
+            motorBackLeft.setPower((y - x + rx) / denominator / dividePower);   //Positive rotation results in forward & left motion
+            motorFrontRight.setPower((y - x - rx) / denominator / dividePower); //Positive rotation results in forward & left motion
+            motorBackRight.setPower((y + x - rx) / denominator / dividePower);  //Positive rotation results in forward & right motion
 
             // arm control stuff            
             slide.setPower(gamepad2.left_stick_y / dividePower);
