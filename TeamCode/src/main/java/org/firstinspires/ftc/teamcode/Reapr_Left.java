@@ -171,7 +171,7 @@ public class Reapr_Left extends LinearOpMode {
             motorBackRight.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
