@@ -39,6 +39,10 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         Servo claw = hardwareMap.get(Servo.class, "claw"); 
         CRServo arm = hardwareMap.get(CRServo.class, "arm"); 
         DcMotor slide = hardwareMap.get(DcMotor.class, "slide");
+
+        // 4 bar linkage
+        DcMotor controlLinkage = hardwareMap.get(DcMotor.class, "fourBarCO");
+        DcMotor expansionLinkage = hardware.get(DcMotor.class, "fourBarXP");
         
         waitForStart();
 
@@ -99,5 +103,16 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
             }
             arm.setPower(0);
         }
+
+        // four-bar linkage
+        if (gamepad2.dpad_right){
+            controlLinkage.setPower((y + x + rx) / denominator / dividePower);
+            expansionLinkage.setPower(y - x - rx) / denominator / dividePower;
+        }
+        if (gamepad.dpad_left){
+            controlLinkage.setPower((y - x - rx) / denominator / dividePower);
+            expansionLinkage.setPower(y + x + rx) / denominator / dividePower;
+        }
+
     }
 }
