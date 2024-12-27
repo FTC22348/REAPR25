@@ -35,14 +35,12 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         
-        // Claw Control
+        // Controls operated by Driver #2
         Servo claw = hardwareMap.get(Servo.class, "claw"); 
         CRServo arm = hardwareMap.get(CRServo.class, "arm"); 
-        DcMotor slide = hardwareMap.get(DcMotor.class, "slide");
-
-        // 4 bar linkage
-        DcMotor controlLinkage = hardwareMap.get(DcMotor.class, "fourBarCO");
-        DcMotor expansionLinkage = hardware.get(DcMotor.class, "fourBarXP");
+        DcMotor fourBarCH = hardwareMap.get(DcMotor.class, "fourBarCH");
+        DcMotor fourBarEH = hardwareMap.get(DcMotor.class, "fourBarEH");
+        CRServo wrist = hardwareMap.get(CRServo.class, "wrist");
         
         waitForStart();
 
@@ -83,8 +81,13 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
             motorFrontRight.setPower((y - x - rx) / denominator / dividePower); //Positive rotation results in forward & left motion
             motorBackRight.setPower((y + x - rx) / denominator / dividePower);  //Positive rotation results in forward & right motion
 
-            // arm control stuff            
-            slide.setPower(gamepad2.left_stick_y / dividePower);
+            // fourBar control stuff            
+            fourBarCH.setPower(-gamepad2.left_stick_y / 1.5);
+            fourBarEH.setPower(-gamepad2.left_stick_y / 1.5);
+            
+            // wrist control stuff            
+            wrist.setPower(-gamepad2.right_stick_x / 1.5);
+            //fourBarEH.setPower(-gamepad2.left_stick_y / 1.5);
             
             // move claw open on y if not already at lowest position.
             if (gamepad2.y){
@@ -103,16 +106,5 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
             }
             arm.setPower(0);
         }
-
-        // four-bar linkage
-        if (gamepad2.dpad_right){
-            controlLinkage.setPower((y + x + rx) / denominator / dividePower);
-            expansionLinkage.setPower(y - x - rx) / denominator / dividePower;
-        }
-        if (gamepad.dpad_left){
-            controlLinkage.setPower((y - x - rx) / denominator / dividePower);
-            expansionLinkage.setPower(y + x + rx) / denominator / dividePower;
-        }
-
     }
 }
