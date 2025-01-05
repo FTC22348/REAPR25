@@ -1,6 +1,7 @@
 // Base code from https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html
 
 package org.firstinspires.ftc.teamcode;
+import java.util.List;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -8,7 +9,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
-import java.util.List;
 
 @TeleOp(name = "TeleOP") // On the Driver Hub, when TeleOP is clicked, clicking "TeleOP" runs this program
 public class Reapr_ITD_TeleOP extends LinearOpMode {
@@ -45,27 +45,19 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         waitForStart();
 
        if (isStopRequested()) return;
-
-        boolean isSlowMode = false;
+       
+       fourBarCH.setPower(0);
+       fourBarEH.setPower(0);
+       
         double dividePower = 1.0;
 
         while (opModeIsActive()) {
             //! Control Speed
-            if (isSlowMode) {
-                dividePower = 1.5;
-            } else {
-                dividePower = 1.0;
+            if (gamepad1.left_stick_button || gamepad1.dpad_right) {
+                dividePower = Math.abs(dividePower - 1.0) < 0.1 ? 1.5 : 1.0;
+                sleep(500);
             }
 
-            if (gamepad1.left_stick_button || gamepad1.dpad_right) {
-                if (isSlowMode) {
-                    isSlowMode = false;
-                    sleep(500);
-                } else {
-                    isSlowMode = true;
-                    sleep(500);
-                }
-            }
 
             // Mecccanum controls
             double y = -gamepad1.left_stick_y;       // Remember, this is reversed!
@@ -82,12 +74,11 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
             motorBackRight.setPower((y + x - rx) / denominator / dividePower);  //Positive rotation results in forward & right motion
 
             // fourBar control stuff            
-            fourBarCH.setPower(-gamepad2.left_stick_y / 1.5);
-            fourBarEH.setPower(-gamepad2.left_stick_y / 1.5);
+            fourBarCH.setPower(gamepad2.left_stick_y);
+            fourBarEH.setPower(gamepad2.left_stick_y);
             
             // wrist control stuff            
             wrist.setPower(-gamepad2.right_stick_x / 1.5);
-            //fourBarEH.setPower(-gamepad2.left_stick_y / 1.5);
             
             // move claw open on y if not already at lowest position.
             if (gamepad2.y){
