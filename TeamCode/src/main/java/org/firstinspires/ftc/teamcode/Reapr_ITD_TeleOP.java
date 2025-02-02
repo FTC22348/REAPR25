@@ -1,5 +1,3 @@
-// Base code from https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html
-
 package org.firstinspires.ftc.teamcode;
 import java.util.List;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,10 +7,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior;
 
 @TeleOp(name = "TeleOP") // On the Driver Hub, when TeleOP is clicked, clicking "TeleOP" runs this program
-public class Reapr_ITD_TeleOP extends LinearOpMode {
-
+public class Reapr_ITD_TeleOp_Copy extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -20,27 +18,37 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
         List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
 
         for (LynxModule hub : allHubs) {
-            hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO); // Sets the Caching Mode to AUTO, rather than OFF (default), which speeds up loop times.
+            hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
 
         // Declare our motors
         
         // Meccanum Drivetrain
-        DcMotor motorFrontLeft = hardwareMap.get(DcMotor.class, "motorFrontLeft"); // An alternative to  DcMotor motorFrontLeft = hardwareMap.dcMotor.get("motorFrontLeft");
-        DcMotor motorBackLeft = hardwareMap.get(DcMotor.class, "motorBackLeft"); // An alternative to  DcMotor motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
-        DcMotor motorFrontRight = hardwareMap.get(DcMotor.class, "motorFrontRight"); // An alternative to  DcMotor motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
-        DcMotor motorBackRight = hardwareMap.get(DcMotor.class, "motorBackRight"); // An alternative to  DcMotor motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
+        DcMotor motorFrontLeft = hardwareMap.get(DcMotor.class, "motorFrontLeft");
+        DcMotor motorBackLeft = hardwareMap.get(DcMotor.class, "motorBackLeft");
+        DcMotor motorFrontRight = hardwareMap.get(DcMotor.class, "motorFrontRight");
+        DcMotor motorBackRight = hardwareMap.get(DcMotor.class, "motorBackRight");
 
         // Reverse left motors 
         motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         
+        // motorFrontLeft.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        // motorBackLeft.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        // motorFrontRight.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        // motorBackRight.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        
         // Controls operated by Driver #2
         Servo claw = hardwareMap.get(Servo.class, "claw"); 
-        CRServo arm = hardwareMap.get(CRServo.class, "arm"); 
+        DcMotor arm = hardwareMap.get(DcMotor.class, "arm"); 
         DcMotor fourBarCH = hardwareMap.get(DcMotor.class, "fourBarCH");
         DcMotor fourBarEH = hardwareMap.get(DcMotor.class, "fourBarEH");
-        CRServo wrist = hardwareMap.get(CRServo.class, "wrist");
+        Servo wrist = hardwareMap.get(Servo.class, "wrist");
+        
+        fourBarEH.setDirection(DcMotorSimple.Direction.REVERSE);
+        
+        fourBarCH.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        fourBarEH.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
         
         waitForStart();
 
@@ -68,34 +76,38 @@ public class Reapr_ITD_TeleOP extends LinearOpMode {
             // This ensures all the powers maintain the same ratio, but only when
             // at least one is out of the range [-1, 1]
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            motorFrontLeft.setPower((y + x + rx) / denominator / dividePower);  //Positive rotation results in forward & right motion
-            motorBackLeft.setPower((y - x + rx) / denominator / dividePower);   //Positive rotation results in forward & left motion
-            motorFrontRight.setPower((y - x - rx) / denominator / dividePower); //Positive rotation results in forward & left motion
-            motorBackRight.setPower((y + x - rx) / denominator / dividePower);  //Positive rotation results in forward & right motion
+            motorFrontLeft.setPower((y + x + rx) / denominator / dividePower);
+            motorBackLeft.setPower((y - x + rx) / denominator / dividePower);
+            motorFrontRight.setPower((y - x - rx) / denominator / dividePower);
+            motorBackRight.setPower((y + x - rx) / denominator / dividePower);
 
             // fourBar control stuff            
             fourBarCH.setPower(gamepad2.left_stick_y);
             fourBarEH.setPower(gamepad2.left_stick_y);
             
-            // wrist control stuff            
-            wrist.setPower(-gamepad2.right_stick_x / 1.5);
-            
             // move claw open on y if not already at lowest position.
-            if (gamepad2.y){
+            if (gamepad2.left_trigger > 0.1 || gamepad1.left_trigger > 0.1){
                 claw.setPosition(0);
             }
 
             // move claw closed on a if not already at the highest position.
-            if (gamepad2.a){
-                claw.setPosition(1);
+            if (gamepad2.right_trigger > 0.1 || gamepad1.right_trigger > 0.1){
+                claw.setPosition(0.8);
             }
         
-            if (gamepad2.x) {
+            if (gamepad2.b) {
                 arm.setPower(1);
-            } else if (gamepad2.b) {
+            }
+            
+            arm.setPower(-gamepad2.right_stick_y);
+            
+            if (gamepad2.x) {
                 arm.setPower(-1);
             }
-            arm.setPower(0);
+            
+            if (gamepad2.dpad_right) {
+                wrist.setPosition(0.25);
+            }
         }
     }
 }
